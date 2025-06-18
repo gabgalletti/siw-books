@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new book</title>
+</head>
+<body>
+    <div class="title">
+        <h1>Add new book</h1>
+    </div>
+    <form th:action="@{/book/new}" th:method="post" th:object="${book}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="title">Nome:</label>
+            <input type="text" id="title" name="title" class="form-control" th:value="${book.title}" required placeholder="Insert book name">
+        </div>
+        <div class="form-group">
+            <label for="year">Year:</label>
+            <input type="number" id="year" name="year" class="form-control" th:value="${book.year}" required placeholder="Insert author year">
+        </div>
+        <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" class="form-control" accept=".png, .jpg, .jpeg">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" class="form-control" th:text="${book.description}" required placeholder="Insert book description"></textarea>
+        </div>
+
+        <select class="form-select" id="author" name="author">
+            <option disabled selected>-- Select Author --</option>
+            <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
+        </select>
+        <p>Can't find the author? You can add it <a href="@{/author/new}">here</a></p>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</body>
+</html>

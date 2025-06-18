@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Authors</title>
+</head>
+<body>
+<div class="title">
+    <h1>Authors</h1>
+</div>
+<input class="search-bar">
+<div th:if="${!#lists.isEmpty(authors)}" class="author-grid">
+    <div class="author-list" th:each="author : ${authors}">
+        <img th:src="${author.imageUrl}">
+        <a class="mini-title" th:text="${author.name}" th:href="@{'/author/' + ${author.id}}">Author Name</a>
+    </div>
+</div>
+</body>
+</html>

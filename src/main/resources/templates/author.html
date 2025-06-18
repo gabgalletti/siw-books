@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:if="${author != null}" th:text="${author.name}">Author Details</title>
+</head>
+<body>
+    <div class="title" th:if="${author != null}">
+      <h1 th:text="${author.name}">Author Name</h1>
+    </div>
+    <img th:if="${author != null and author.imageUrl != null}" th:src="${author.imageUrl}">
+    <div class="description">
+      <p th:text="${author.description}"></p>
+    </div>
+    <div th:if="${!#lists.isEmpty(author.books)}" class="books-grid">
+      <div class="book-list" th:each="book : ${author.books}">
+          <img th:if="${book.imageUrl != null}" th:src="${book.imageUrl}">
+          <a class="mini-title" th:if="${book.id != null}" th:text="${book.title}" th:href="@{/book/{id}(id=${book.id})}">Book Title</a>
+
+      </div>
+    </div>
+</body>
+</html>

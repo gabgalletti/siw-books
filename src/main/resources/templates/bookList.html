@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Books</title>
+</head>
+<body>
+    <div class="title">
+        <h1>Books</h1>
+    </div>
+    <input class="search-bar">
+    <div th:if="${!#lists.isEmpty(books)}" class="books-grid">
+        <div class="book-list" th:each="book : ${books}">
+            <img th:src="${book.imageUrl}">
+            <a class="mini-title" th:text="${book.title}" th:href="@{'/book/' + ${book.id}}">Book Title</a>
+            <a th:if="${book.author != null}" th:text="${book.author.name}" th:href="@{'/author/' + ${book.author.id}}">Artist</a>
+        </div>
+    </div>
+</body>
+</html>

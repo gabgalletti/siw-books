@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add new Author</title>
+</head>
+<body>
+<div class="title">
+    <h1>Add new Author</h1>
+</div>
+<form th:action="@{/author/new}" th:method="post" th:object="${author}" enctype="multipart/form-data">
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" class="form-control" th:value="${author.name}" required placeholder="Insert author name">
+    </div>
+    <div class="form-group">
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" class="form-control" accept=".png, .jpg, .jpeg">
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" class="form-control" th:text="${author.description}" required placeholder="Insert author description"></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+</body>
+</html>
