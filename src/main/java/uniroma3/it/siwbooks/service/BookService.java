@@ -33,7 +33,13 @@ public class BookService{
         );
 
         return booksList.size() > 4 ? booksList.subList(0, 4) : booksList;
-
-
     }
+
+    public List<Book> findLatestBooks() {
+        List<Book> booksList = new ArrayList<>();
+        this.bookRepository.findAll().forEach(booksList::add);
+        booksList.sort(Comparator.comparing(Book::getCreatedAt).reversed()); // Ordina per data decrescente
+        return booksList.size() > 4 ? booksList.subList(0, 4) : booksList; // Ritorna massimo 4 libri
+    }
+
 }

@@ -177,6 +177,8 @@ public class BookController {
     @GetMapping("/home")
     public String home(Model model) {
         model.addAttribute("mostLikedBooks", bookService.findMostLiked());
+        model.addAttribute("newBooks", bookService.findLatestBooks());
+        model.addAttribute("topAuthors", authorService.findTopAuthors());
         return "home";
     }
 }

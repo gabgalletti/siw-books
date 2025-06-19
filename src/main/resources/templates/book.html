@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
+    <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
     <style>
         .star {
             font-size: 20px;
@@ -24,7 +27,19 @@
     </style>
     <title th:if="${book != null}" th:text="${book.title}">Title</title>
 </head>
-<body>
+<body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
+    <header class="flex container">
+        <div class="flex items-center justify-start gap-9">
+            <h2>Siw Books</h2>
+            <a href="/home">Home</a>
+            <a href="/book/all">Books</a>
+            <a href="/author/all">Authors</a>
+        </div>
+        <div class="flex justify-end gap-9">
+            <a class="padding" href="/login">Login</a>
+        </div>
+    </header>
+<div class="flex content">
     <div class="title" th:if="${book != null}">
         <h1 th:text="${book.title}">Book Name</h1>
         <p th:text="${book.year}"> (Year)</p>
@@ -96,6 +111,7 @@
         </div>
         <div class="review-description" th:text="${review.reviewDescription}">Description</div>
     </div>
+</div>
     <script>
         /*function toggleFavourite(event) {
             const favouritedInput = document.getElementById("favourited");

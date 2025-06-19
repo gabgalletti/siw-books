@@ -1,6 +1,7 @@
 package uniroma3.it.siwbooks.model;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,6 +28,14 @@ public class Book {
 
     @ManyToMany(mappedBy = "favouriteBooks")
     private List<User> users;
+
+    @Column(nullable = false, updatable = false)  // Obbligatorio, mai aggiornabile
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = LocalDateTime.now(); // Imposta l'ora corrente prima del salvataggio
+    }
 
 
     public Long getId() {
@@ -92,6 +101,11 @@ public class Book {
     public List<User> getUsers() {return this.users;}
 
     public void setUsers(List<User> users) {this.users = users;}
+
+    public LocalDateTime getCreatedAt() {return createdAt;}
+
+    public void setCreatedAt(LocalDateTime createdAt) {this.createdAt = createdAt;}
+
 
     @Override
     public boolean equals(Object o) {

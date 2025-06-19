@@ -23,6 +23,7 @@ a{
 }
 .flex.content{
     display: flex; /* Mantieni flex sul contenitore */
+    flex-direction: column;
     justify-content: center; /* Centra orizzontalmente */
     align-items: center;
     margin: 3rem auto 0; /* Aggiungi un margine superiore di 3rem */
@@ -131,4 +132,40 @@ a{
 .book-item p {
     color: #666;
     font-size: 0.9rem;
+}
+.author-item{
+    flex: 1 1 calc(20% - 1rem); /* 5 elementi per riga con margine */
+    max-width: 180px;
+    text-align: center;
+}
+
+.circle-container {
+    width: 100%;
+    aspect-ratio: 1;
+    text-align: center;
+    border-radius: 50%; /* Trasforma il contenitore in un cerchio */
+    overflow: hidden; /* Nasconde le parti dell'immagine fuori dal cerchio */
+    display: flex;
+    justify-content: center; /* Centra l'immagine orizzontalmente */
+    align-items: center; /* Centra l'immagine verticalmente */
+    border: 1px solid;
+}
+
+.circle-container img {
+    width: 100%; /* L'immagine si adatta completamente al contenitore */
+    height: 100%;
+    object-fit: cover;
+}
+
+.best-books,
+.top-authors,
+.new-books {
+    margin-top: 3rem; /* Aumenta la distanza tra le sezioni */
+}
+
+.title{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    font-size: 2rem;
 }

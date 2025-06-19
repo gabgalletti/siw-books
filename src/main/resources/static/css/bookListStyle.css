@@ -1,0 +1,63 @@
+.book-list-container {
+    display: flex;
+    flex-direction: column; /* Visualizza i libri uno sotto l'altro */
+    gap: 0rem; /* Spaziatura tra i libri */
+    width: 100%; /* Assicura che la lista occupi tutta la larghezza */
+    margin-top: 2rem; /* Aggiungi un po' di spazio sopra la lista */
+}
+
+.book-list-item {
+    display: flex; /* Struttura flessibile per ogni libro */
+    align-items: center; /* Centra verticalmente immagine e testo */
+    gap: 1rem; /* Spaziatura tra immagine e informazioni */
+    width: 100%; /* Assicura che ogni libro occupi tutta la larghezza */
+}
+
+.book-thumbnail {
+    width: 60px; /* Dimensioni ridotte dell'immagine */
+    height: 80px; /* Altezza proporzionata all'immagine */
+    object-fit: cover; /* Assicura che l'immagine si adatti senza distorsioni */
+    border-radius: 5px; /* Arrotonda i bordi dell'immagine */
+}
+
+.book-details {
+    display: flex;
+    flex-direction: column; /* Disposizione verticale di titolo e autore */
+    justify-content: center; /* Centra verticalmente il contenuto */
+}
+
+.book-title-text {
+    font-size: 1.2rem; /* Dimensione titolo */
+    font-weight: bold; /* Testo in grassetto per il titolo */
+    color: #333; /* Colore del titolo */
+    margin-bottom: 0.25rem; /* Spaziatura tra titolo e autore */
+    text-decoration: none; /* Rimuove la sottolineatura */
+}
+
+.book-title-text:hover {
+    text-decoration: underline; /* Aggiunge sottolineatura al passaggio del mouse */
+}
+
+.book-author-text {
+    font-size: 1rem; /* Dimensione autore */
+    color: #666; /* Colore più chiaro per l'autore */
+    text-decoration: none; /* Rimuove la sottolineatura */
+}
+
+.book-author-text:hover {
+    text-decoration: underline; /* Aggiunge sottolineatura al passaggio del mouse */
+}
+
+.book-list-item-link {
+    text-decoration: none; /* Rimuove la decorazione del link */
+    color: inherit; /* Mantiene il colore predefinito del testo */
+    display: block; /* Assicura che il link avvolga tutto il contenuto */
+    border: 1px solid #ddd; /* Bordo sottile attorno a ogni libro */
+    border-radius: 5px; /* Bordi arrotondati */
+    transition: all 0.3s ease; /* Animazione per il passaggio del mouse */
+}
+
+.book-list-item-link:hover {
+    background-color: #f9f9f9; /* Colore di sfondo al passaggio del mouse */
+    border-color: #ccc; /* Cambia leggermente il colore del bordo */
+}

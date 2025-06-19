@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
-    <link rel="stylesheet" href="/static/css/homeStyle.css">
     <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
     <title>Siw Books</title>
 </head>
@@ -12,9 +11,9 @@
     <header class="flex container">
         <div class="flex items-center justify-start gap-9">
             <h2>Siw Books</h2>
-            <a href="/">Home</a>
-            <a href="/books">Books</a>
-            <a href="/authors">Authors</a>
+            <a href="/home">Home</a>
+            <a href="/book/all">Books</a>
+            <a href="/author/all">Authors</a>
         </div>
         <div class="flex justify-end gap-9">
             <a class="padding" href="/login">Login</a>
@@ -23,22 +22,38 @@
     <div class="flex content">
         <div class="search-container">
             <i class="fas fa-search"></i>
-            <input
-                placeholder="Search for books or authors"
-                class="search-bar"
-                value=""
-            />
+            <input placeholder="Search for books or authors" class="search-bar" value=""/>
         </div>
         <div class="best-books">
             <h2>Most Liked Books</h2>
             <div class="book-gallery flex gap-4">
                 <div class="book-item" th:each="book : ${mostLikedBooks}">
                     <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
-                    <h4 th:text="${book.title}">Titolo</h4>
+                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book/' + ${book.id}}">Titolo</a>
                     <p th:text="'Favorited by ' + ${book.users.size()} + ' users'">N Like to this Book</p>
                 </div>
             </div>
-
+        </div>
+        <div class="top-authors">
+            <h2>Top Authors</h2>
+            <div class="book-gallery flex gap-4">
+                <div class="author-item" th:each="author: ${topAuthors}">
+                    <div class="circle-container">
+                        <img th:src="${author.imageUrl}" th:href="@{'/author/' + ${author.id}}" alt="Author image" class="book-image"/>
+                    </div>
+                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${author.name}" th:href="@{'/author/' + ${author.id}}">Titolo</a>
+                </div>
+            </div>
+        </div>
+        <div class="new-books">
+            <h2>New Releases</h2>
+            <div class="book-gallery flex gap-4">
+                <div class="book-item" th:each="book : ${newBooks}">
+                    <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
+                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book' + ${book.id}}">Titolo</a>
+                    <p th:text="${book.author.name}">Year</p>
+                </div>
+            </div>
         </div>
     </div>
 </body>
