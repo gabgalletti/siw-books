@@ -1,0 +1,134 @@
+body{
+    font-family: "Noto Serif", "Noto Sans", sans-serif;
+}
+header{
+    border-bottom: 1px solid #ccc; /* Linea sottile che divide l'header */
+
+}
+a{
+    text-decoration: none;
+    color: black;
+}
+
+.flex {
+    display: flex; /* Questo trasforma l'elemento in un flex container */
+}
+.container {
+    align-items: center;    /* Allinea gli elementi verticalmente */
+    justify-content: space-between;
+}
+.content{
+    width: 80%;
+    max-width: 1000px;
+}
+.flex.content{
+    display: flex; /* Mantieni flex sul contenitore */
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center;
+    margin: 3rem auto 0; /* Aggiungi un margine superiore di 3rem */
+
+}
+.items-center {
+    align-items: center; /* Centra gli elementi lungo l'asse trasversale */
+}
+.justify-start {
+    justify-content: flex-start;
+}
+.justify-center {
+    justify-content: center;
+}
+.justify-end{
+    justify-content: flex-end;
+}
+
+.gap-4 {
+    gap: 1rem; /* Definisce uno spazio tra gli elementi */
+}
+
+.gap-9 {
+    gap: 2.25rem; /* Spazio maggiore tra gli elementi */
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.padding{
+    padding: 0.4rem;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+.margin-top{
+    margin-top: 1rem;
+}
+.margin-bottom{
+    margin-bottom: 1rem;
+}
+.margin-left{
+    margin-left: 1rem;
+}
+.margin-right{
+    margin-right: 1rem;
+}
+
+.search-bar{
+    width: 100%;
+    background-color: #dcdcdc;
+    padding: 5px;
+    height: 25px;
+    border: none;
+    border-radius: 5px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center; /* Per centrare verticalmente gli elementi */
+    width: 100%;
+    background-color: #dcdcdc; /* Sfondo chiaro */
+    border-radius: 5px; /* Bordo arrotondato */
+    padding: 0.5rem; /* Aggiungi spaziatura interna */
+    height: 25px;
+}
+
+.search-container i {
+    color: #666; /* Colore dell'icona */
+    margin-right: 0.5rem; /* Distanza tra l'icona e la barra */
+    font-size: 1rem; /* Dimensione dell'icona */
+}
+
+.search-container .search-bar {
+    flex: 1; /* L'input occupa il resto dello spazio */
+    border: none; /* Rimuovi il bordo */
+    outline: none; /* Rimuovi lo stile di focus del browser */
+    background-color: transparent; /* Sfondo trasparente */
+    font-family: "Noto Serif", "Noto Sans", sans-serif;
+    font-size: 1rem; /* Dimensione del testo */
+}
+
+.book-gallery {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+    flex-wrap: wrap; /* Permette di adattare i libri su schermi piccoli */
+}
+
+.book-item {
+    flex: 1 1 calc(25% - 1rem); /* 4 elementi per riga con margine */
+    text-align: center;
+}
+
+.book-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+}
+
+.book-item h4 {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    font-weight: bold;
+}
+
+.book-item p {
+    color: #666;
+    font-size: 0.9rem;
+}
