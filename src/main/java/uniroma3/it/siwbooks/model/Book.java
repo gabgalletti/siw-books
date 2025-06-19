@@ -20,11 +20,13 @@ public class Book {
     @OneToMany
     private List<Review> reviews = new ArrayList<>();
 
+    private double averageRating;
+
     @ManyToOne
     private Author author;
 
     @ManyToMany(mappedBy = "favouriteBooks")
-    private Set<User> users;
+    private List<User> users;
 
 
     public Long getId() {
@@ -83,19 +85,25 @@ public class Book {
         this.reviews = reviews;
     }
 
-    public Set<User> getUsers() {return this.users;}
+    public double getAverageRating() {return averageRating;}
 
-    public void setUsers(Set<User> users) {this.users = users;}
+    public void setAverageRating(double averageRating) {this.averageRating = averageRating;}
+
+    public List<User> getUsers() {return this.users;}
+
+    public void setUsers(List<User> users) {this.users = users;}
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return year == book.year && Objects.equals(id, book.id) && Objects.equals(title, book.title) && Objects.equals(description, book.description) && Objects.equals(imageUrl, book.imageUrl)&& Objects.equals(author, book.author);
+        return Objects.equals(id, book.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, year, description, imageUrl, author);
+        return Objects.hash(id);
     }
+
 }

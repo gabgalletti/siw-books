@@ -40,17 +40,8 @@ public class BookController {
         }
         Book book = bookOptional.get();
 
-        //calcolo averageRating
-        List<Review> reviews = book.getReviews();
-        double averageRating = 0.0;
-        if (!reviews.isEmpty()) { // Controllo per evitare divisione per zero
-            int sum = 0;
-            for (Review r : reviews) {
-                sum += r.getRating();
-            }
-            averageRating = (double) sum / reviews.size();
-        }
-        model.addAttribute("averageRating", averageRating);
+
+        model.addAttribute("averageRating", book.getAverageRating());
 
 
 
@@ -95,10 +86,8 @@ public class BookController {
         Book book = bookService.findById(id).get();
         favourited = !favourited; // Inverti lo stato
         if (favourited) {
-            // Se era nei preferiti, lo rimuoviamo
             this.user.getFavouriteBooks().add(book);
         } else {
-            // Altrimenti, lo aggiungiamo
             this.user.getFavouriteBooks().remove(book);
         }
 
@@ -134,6 +123,17 @@ public class BookController {
         // Salva la recensione
         reviewService.save(newReview);
 
+        List<Review> reviews = book.getReviews();
+        double averageRating = 0.0;
+        if (!reviews.isEmpty()) { // Controllo per evitare divisione per zero
+            int sum = 0;
+            for (Review r : reviews) {
+                sum += r.getRating();
+            }
+            averageRating = (double) sum / reviews.size();
+        }
+        book.setAverageRating(averageRating);
+        bookService.save(book);
         return "redirect:/book/" + id;
 
     }
@@ -172,5 +172,11 @@ public class BookController {
             e.printStackTrace();
         }
         return "redirect:/book/all";
+    }
+
+    @GetMapping("/home")
+    public String home(Model model) {
+        model.addAttribute("mostLikedBooks", bookService.findMostLiked());
+        return "home";
     }
 }

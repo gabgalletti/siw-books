@@ -30,7 +30,7 @@
             <option disabled selected>-- Select Author --</option>
             <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
         </select>
-        <p>Can't find the author? You can add it <a href="@{/author/new}">here</a></p>
+        <p>Can't find the author? You can add it <a th:href="@{/author/new}">here</a></p>
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>

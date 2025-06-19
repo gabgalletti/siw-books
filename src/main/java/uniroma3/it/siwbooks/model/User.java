@@ -3,6 +3,7 @@ package uniroma3.it.siwbooks.model;
 import jakarta.persistence.*;
 
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -17,10 +18,10 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
-    private Set<Review> reviews;
+    private List<Review> reviews;
 
     @ManyToMany
-    private Set<Book> favouriteBooks;
+    private List<Book> favouriteBooks;
 
 
     public Long getId() {
@@ -55,29 +56,30 @@ public class User {
         this.email = email;
     }
 
-    public Set<Review> getReviews() {
+    public List<Review> getReviews() {
         return reviews;
     }
 
-    public void setReviews(Set<Review> reviews) {
+    public void setReviews(List<Review> reviews) {
         this.reviews = reviews;
     }
 
-    public Set<Book> getFavouriteBooks() {return this.favouriteBooks;}
+    public List<Book> getFavouriteBooks() {return this.favouriteBooks;}
 
-    public void setFavouriteBooks(Set<Book> favouriteBooks) {this.favouriteBooks = favouriteBooks;}
+    public void setFavouriteBooks(List<Book> favouriteBooks) {this.favouriteBooks = favouriteBooks;}
 
 
     @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(name, user.name) && Objects.equals(surname, user.surname) && Objects.equals(email, user.email);
+        return Objects.equals(id, user.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, email);
+        return Objects.hash(id);
     }
 }
 
