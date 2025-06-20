@@ -1,0 +1,80 @@
+.rating-section, .add-to-favourites-section{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.add-to-favourites-section{
+    margin-top: 2rem;
+}
+
+.flex.content-2{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+.content-left{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.content-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.title{
+    display: flex;
+    flex-direction: column;
+}
+/* Stili per il contenitore .title e i suoi figli */
+
+/* Spaziatura e stile per il titolo (h1) */
+.title h1 {
+    font-size: 2em;     /* Esempio: rendi il titolo più grande */
+    margin-bottom: 0px;
+}
+
+/* Spaziatura e stile per l'anno (p) */
+.title p {
+    margin-top: 0px;
+    font-size: 0.8em;   /* Esempio: dimensione per l'anno */
+    color: #555555;     /* Esempio: colore più tenue per l'anno */
+    margin-bottom: 0.2em; /* Spazio tra l'anno e l'autore sottostante */
+}
+
+/* Spaziatura e stile per l'autore (a) */
+.title a {
+    font-size: 0.5em;   /* Esempio: dimensione per l'autore */
+    color: #666;
+    text-decoration: none; /* Rimuove la sottolineatura standard dei link */
+    margin-bottom: 3em;
+}
+.description{
+    margin-bottom: 3em;
+    border-bottom: 1px solid #ccc;
+}
+
+.star {
+    font-size: 20px;
+    color: gray;
+    cursor: pointer;
+}
+
+.star.checked {
+    color: orange;
+}
+.star-rating label {
+    font-size: 20px;
+    color: gray;
+    cursor: pointer;
+}
+input[type="radio"]:checked + label {
+    color: orange;
+}

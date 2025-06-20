@@ -6,25 +6,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
     <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
-    <style>
-        .star {
-            font-size: 20px;
-            color: gray;
-            cursor: pointer;
-        }
-
-        .star.checked {
-            color: orange;
-        }
-        .star-rating label {
-            font-size: 20px;
-            color: gray;
-            cursor: pointer;
-        }
-        input[type="radio"]:checked + label {
-            color: orange;
-        }
-    </style>
+    <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
+    <link rel="script" th:href="@{/js/bookScript.js}">
     <title th:if="${book != null}" th:text="${book.title}">Title</title>
 </head>
 <body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
@@ -39,112 +22,80 @@
             <a class="padding" href="/login">Login</a>
         </div>
     </header>
-<div class="flex content">
+<div class="flex content justify-start">
     <div class="title" th:if="${book != null}">
         <h1 th:text="${book.title}">Book Name</h1>
-        <p th:text="${book.year}"> (Year)</p>
-        <a th:if="${book.author != null}" th:text="${book.author.name}" th:href="@{'/author/' + ${book.author.id}}">Artist</a>
+        <p th:text="${'Released in ' + book.year}"> (Year)</p>
+        <a th:if="${book.author != null}" th:text="${'By ' + book.author.name}" th:href="@{'/author/' + ${book.author.id}}">Artist</a>
     </div>
-    <div style="display: flex; align-items: flex-start;">
-        <!-- Sezione sinistra: immagine -->
-        <img th:if="${book != null and book.imageUrl != null}" th:src="${book.imageUrl}" alt="Book Image" style="width: 300px; height: auto; margin-right: 20px;">
+    <div class="flex content-2">
+        <div class="content-left">
+            <img class="justify-start" th:if="${book != null and book.imageUrl != null}" th:src="${book.imageUrl}" alt="Book Image" style="width: 300px; height: auto; margin-right: 20px;">
+            <div class="description">
+                <h3>Description</h3>
+                <p th:text="${book.description}">Book Description</p>
+            </div>
+            <div class="separator"></div>
 
-        <!-- Sezione destra: rating e pulsante -->
-        <div style="display: flex; flex-direction: column; justify-content: flex-start; width: 200px;">
-            <!-- Rating medio -->
-            <div th:if="${book != null}" style="margin-bottom: 20px;">
-                <h3>Rating</h3>
-                <div id="star">
+            <form th:if="${!hasReviewed}" th:action="@{'/book/' + ${book.id} + '/saveReview'}" th:object="${newReview}" method="post">
+                <h3>Add your review</h3>
+
+                <label>Rating:</label><br>
+                <div id="stars">
+                    <!-- Hidden input per il voto -->
+                    <input type="hidden" id="rating" th:field="*{rating}" required>
+
+                    <!-- Stelle cliccabili -->
+                    <i class="fa fa-star star" data-value="1"></i>
+                    <i class="fa fa-star star" data-value="2"></i>
+                    <i class="fa fa-star star" data-value="3"></i>
+                    <i class="fa fa-star star" data-value="4"></i>
+                    <i class="fa fa-star star" data-value="5"></i>
+                </div>
+
+                <label for="reviewDescription">Review:</label>
+                <textarea id="reviewDescription" th:field="*{reviewDescription}" required></textarea>
+
+                <button type="submit">Save review</button>
+            </form>
+            <!--si potrebbe implementare la visione della recensione dell'utente attuale come prima recensione-->
+            <h3 th:if="${!#lists.isEmpty(book.reviews)}">Reviews</h3>
+            <div class="reviews" th:if="${!#lists.isEmpty(book.reviews)}" th:each="review : ${book.reviews}">
+                <div class="review-user" th:text="${review.user.surname}">User</div>
+                <div class="rating">
                     <span th:each="i : ${#numbers.sequence(1, 5)}">
-                        <i class="fa fa-star" th:classappend="${i <= averageRating} ? 'fa-star checked' : 'fa-star-o'"></i>
+                        <i class="fa star" th:classappend="${i <= review.rating} ? 'fa-star checked' : 'fa-star-o'"></i>
                     </span>
-                    <span th:text="${averageRating != null ? ' (' + averageRating + ')': 'N.D.'}">(N.D.)</span>
+                </div>
+                <div class="review-description" th:text="${review.reviewDescription}">Description</div>
+            </div>
+        </div>
+        <!-- Sezione destra: rating e pulsante -->
+        <div class="content-right">
+            <div class="rating-section">
+                <!-- Rating medio -->
+                <div th:if="${book != null}">
+                    <h3>Rating</h3>
+                    <div id="star">
+                        <span th:each="i : ${#numbers.sequence(1, 5)}">
+                            <i class="fa fa-star" th:classappend="${i <= averageRating} ? 'fa-star checked' : 'fa-star-o'"></i>
+                        </span>
+                        <span th:text="${averageRating != null ? ' (' + averageRating + ')': 'N.D.'}">(N.D.)</span>
+                    </div>
                 </div>
             </div>
-
-            <form th:action="@{'/book/' + ${book.id}}" method="post">
-                <input type="hidden" id="favourited" name="favourited" th:value="${favourited}"> <!-- Campo hidden -->
-                <button type="submit" id="addToFavourites">
-                    <span th:text="${favourited} ? 'Added to favourite' : 'Add to Favourites'"></span>
-                    <i class="fa fa-star" th:classappend="${favourited} ? 'fa-star checked' : 'fa-star-o'"></i>
-                </button>
-            </form>
-
+            <div class="add-to-favourites-section">
+                <form th:action="@{'/book/' + ${book.id}}" method="post">
+                    <input type="hidden" id="favourited" name="favourited" th:value="${favourited}"> <!-- Campo hidden -->
+                    <button type="submit" id="addToFavourites">
+                        <span th:text="${favourited} ? 'Added to favourite' : 'Add to Favourites'"></span>
+                        <i class="fa fa-star" th:classappend="${favourited} ? 'fa-star checked' : 'fa-star-o'"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-    </div>
-
-    <div class="description">
-        <h3>Description</h3>
-        <p th:text="${book.description}">Book Description</p>
-    </div>
-
-
-    <form th:if="${!hasReviewed}" th:action="@{'/book/' + ${book.id} + '/saveReview'}" th:object="${newReview}" method="post">
-        <h3>Add your review</h3>
-
-        <label>Rating:</label><br>
-        <div id="stars">
-            <!-- Hidden input per il voto -->
-            <input type="hidden" id="rating" th:field="*{rating}" required>
-
-            <!-- Stelle cliccabili -->
-            <i class="fa fa-star star" data-value="1"></i>
-            <i class="fa fa-star star" data-value="2"></i>
-            <i class="fa fa-star star" data-value="3"></i>
-            <i class="fa fa-star star" data-value="4"></i>
-            <i class="fa fa-star star" data-value="5"></i>
-        </div>
-
-        <label for="reviewDescription">Review:</label>
-        <textarea id="reviewDescription" th:field="*{reviewDescription}" required></textarea>
-
-        <button type="submit">Save review</button>
-    </form>
-    <!--si potrebbe implementare la visione della recensione dell'utente attuale come prima recensione-->
-    <h3 th:if="${!#lists.isEmpty(book.reviews)}">Reviews</h3>
-    <div class="reviews" th:if="${!#lists.isEmpty(book.reviews)}" th:each="review : ${book.reviews}">
-        <div class="review-user" th:text="${review.user.surname}">User</div>
-        <div class="rating">
-            <span th:each="i : ${#numbers.sequence(1, 5)}">
-                <i class="fa star" th:classappend="${i <= review.rating} ? 'fa-star checked' : 'fa-star-o'"></i>
-            </span>
-        </div>
-        <div class="review-description" th:text="${review.reviewDescription}">Description</div>
     </div>
 </div>
-    <script>
-        /*function toggleFavourite(event) {
-            const favouritedInput = document.getElementById("favourited");
-            // Inverti il valore corrente
-            favouritedInput.value = favouritedInput.value === "true" ? "false" : "true";
-        }*/
 
-        // 1. Prendi tutte le stelle
-        const stars = document.querySelectorAll('.star');
-
-        // 2. Prendi il campo hidden dove salviamo il voto
-        const ratingInput = document.getElementById('rating');
-
-        // 3. Per ogni stella, aggiungiamo un event listener per il click
-        stars.forEach(star => {
-            star.addEventListener('click', () => {
-                // 4. Prendi il valore della stella cliccata (da 1 a 5)
-                const value = parseInt(star.getAttribute('data-value'));
-
-                // 5. Salva il valore nell'input hidden (che verrà inviato nel form)
-                ratingInput.value = value;
-
-                // 6. Rimuovi la classe "checked" da tutte le stelle
-                stars.forEach(s => s.classList.remove('checked'));
-
-                // 7. Aggiungi "checked" a tutte le stelle <= del voto selezionato
-                stars.forEach(s => {
-                    if (parseInt(s.getAttribute('data-value')) <= value) {
-                        s.classList.add('checked');
-                    }
-                });
-            });
-        });
-    </script>
 </body>
 </html>

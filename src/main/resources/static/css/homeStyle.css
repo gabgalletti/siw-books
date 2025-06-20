@@ -29,6 +29,13 @@ a{
     margin: 3rem auto 0; /* Aggiungi un margine superiore di 3rem */
 
 }
+
+.flex-column{
+    flex-direction: column;
+}
+.space-between{
+    justify-content: space-between;
+}
 .items-center {
     align-items: center; /* Centra gli elementi lungo l'asse trasversale */
 }

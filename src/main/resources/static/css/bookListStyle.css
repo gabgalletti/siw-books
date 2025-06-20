@@ -1,4 +1,4 @@
-.book-list-container {
+.content-list-container {
     display: flex;
     flex-direction: column; /* Visualizza i libri uno sotto l'altro */
     gap: 0rem; /* Spaziatura tra i libri */
@@ -6,27 +6,30 @@
     margin-top: 2rem; /* Aggiungi un po' di spazio sopra la lista */
 }
 
-.book-list-item {
+.content-list-item {
     display: flex; /* Struttura flessibile per ogni libro */
     align-items: center; /* Centra verticalmente immagine e testo */
     gap: 1rem; /* Spaziatura tra immagine e informazioni */
     width: 100%; /* Assicura che ogni libro occupi tutta la larghezza */
 }
 
-.book-thumbnail {
+.content-thumbnail {
     width: 60px; /* Dimensioni ridotte dell'immagine */
     height: 80px; /* Altezza proporzionata all'immagine */
     object-fit: cover; /* Assicura che l'immagine si adatti senza distorsioni */
     border-radius: 5px; /* Arrotonda i bordi dell'immagine */
 }
 
-.book-details {
+.content-details {
     display: flex;
     flex-direction: column; /* Disposizione verticale di titolo e autore */
     justify-content: center; /* Centra verticalmente il contenuto */
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
 }
 
-.book-title-text {
+.content-title-text {
     font-size: 1.2rem; /* Dimensione titolo */
     font-weight: bold; /* Testo in grassetto per il titolo */
     color: #333; /* Colore del titolo */
@@ -34,30 +37,51 @@
     text-decoration: none; /* Rimuove la sottolineatura */
 }
 
-.book-title-text:hover {
-    text-decoration: underline; /* Aggiunge sottolineatura al passaggio del mouse */
-}
 
-.book-author-text {
+
+.content-subtitle-text {
     font-size: 1rem; /* Dimensione autore */
     color: #666; /* Colore più chiaro per l'autore */
     text-decoration: none; /* Rimuove la sottolineatura */
 }
 
-.book-author-text:hover {
-    text-decoration: underline; /* Aggiunge sottolineatura al passaggio del mouse */
-}
 
-.book-list-item-link {
+.content-list-item-link {
     text-decoration: none; /* Rimuove la decorazione del link */
     color: inherit; /* Mantiene il colore predefinito del testo */
     display: block; /* Assicura che il link avvolga tutto il contenuto */
-    border: 1px solid #ddd; /* Bordo sottile attorno a ogni libro */
     border-radius: 5px; /* Bordi arrotondati */
     transition: all 0.3s ease; /* Animazione per il passaggio del mouse */
 }
 
-.book-list-item-link:hover {
-    background-color: #f9f9f9; /* Colore di sfondo al passaggio del mouse */
+.content-list-item-link:hover {
+    background-color: #f7f7f7; /* Colore di sfondo al passaggio del mouse */
     border-color: #ccc; /* Cambia leggermente il colore del bordo */
 }
+
+.title{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.title h1{
+    justify-content: flex-start;
+}
+
+.add-content-button{
+    font-size: 1rem;
+    width: 40px;
+    height: 40px;
+    justify-content: flex-end;
+    border: 2px #ccc solid;
+    border-radius: 50%;
+    background-color: transparent;
+    color: black;
+}
+
+.add-content-button:hover{
+    background-color: #dcdcdc;
+}
+

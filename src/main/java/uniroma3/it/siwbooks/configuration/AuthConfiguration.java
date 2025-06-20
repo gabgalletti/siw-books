@@ -38,8 +38,8 @@ public class AuthConfiguration {
         http
                 .csrf().disable().cors().disable()
                 .authorizeHttpRequests()
-                .requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/login", "/static/css/**", "/images/**", "/favicon.ico","/logout", "/book/**", "/author/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/register", "/login", "/logout", "/book/**", "/author/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/", "/index", "/register", "/login", "/books-cover/**", "/author-photo/**", "/css/**", "/images/**", "/favicon.ico","/logout", "/home").permitAll()
+                .requestMatchers(HttpMethod.POST, "/register", "/login", "/logout", "home").permitAll()
                 .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("ADMIN")
                 .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("ADMIN")
                 .anyRequest().authenticated()
