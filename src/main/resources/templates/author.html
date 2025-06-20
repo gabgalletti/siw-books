@@ -2,22 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
+    <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/bookListStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/authorStyle.css}">
     <title th:if="${author != null}" th:text="${author.name}">Author Details</title>
 </head>
-<body>
-    <div class="title" th:if="${author != null}">
-      <h1 th:text="${author.name}">Author Name</h1>
-    </div>
-    <img th:if="${author != null and author.imageUrl != null}" th:src="${author.imageUrl}">
-    <div class="description">
-      <p th:text="${author.description}"></p>
-    </div>
-    <div th:if="${!#lists.isEmpty(author.books)}" class="books-grid">
-      <div class="book-list" th:each="book : ${author.books}">
-          <img th:if="${book.imageUrl != null}" th:src="${book.imageUrl}">
-          <a class="mini-title" th:if="${book.id != null}" th:text="${book.title}" th:href="@{/book/{id}(id=${book.id})}">Book Title</a>
+<body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
+    <header class="flex container">
+        <div class="flex items-center justify-start gap-9">
+            <h2>Siw Books</h2>
+            <a href="/home">Home</a>
+            <a href="/book/all">Books</a>
+            <a href="/author/all">Authors</a>
+        </div>
+        <div class="flex justify-end gap-9">
+            <a class="padding" href="/login">Login</a>
+        </div>
+    </header>
+    <div class="flex book-content justify-start">
+        <div class="title" th:if="${author != null}">
+            <h1 th:text="${author.name}">Author Name</h1>
+        </div>
+        <div class="content-left">
+            <img class="author-image justify-start" th:if="${author != null and author.imageUrl != null}" th:src="${author.imageUrl}">
 
-      </div>
+            <div class="description">
+                <p th:text="${author.description}"></p>
+            </div>
+            <div th:if="${!#lists.isEmpty(author.books)}" class="content-list-container">
+                <div th:each="book : ${author.books}">
+                    <a class="content-list-item-link" th:href="@{'/book/' + ${book.id}}">
+                        <div class="content-list-item">
+                            <img class="content-thumbnail" th:src="${book.imageUrl}">
+                            <div class="content-details">
+                                <span class="content-title-text" th:if="${book.id != null}" th:text="${book.title}" th:href="@{/book/{id}(id=${book.id})}">Book Title</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

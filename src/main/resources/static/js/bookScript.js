@@ -1,13 +1,7 @@
-/*function toggleFavourite(event) {
-            const favouritedInput = document.getElementById("favourited");
-            // Inverti il valore corrente
-            favouritedInput.value = favouritedInput.value === "true" ? "false" : "true";
-        }*/
-
 // 1. Prendi tutte le stelle
 const stars = document.querySelectorAll('.star');
 
-// 2. Prendi il campo hidden dove salviamo il voto
+// 2. Prendi il campo hidden dove salvi il voto
 const ratingInput = document.getElementById('rating');
 
 // 3. Per ogni stella, aggiungiamo un event listener per il click
@@ -19,13 +13,17 @@ stars.forEach(star => {
         // 5. Salva il valore nell'input hidden (che verrà inviato nel form)
         ratingInput.value = value;
 
-        // 6. Rimuovi la classe "checked" da tutte le stelle
-        stars.forEach(s => s.classList.remove('checked'));
+        // 6. Rimuovi le classi "fa-star" e aggiungi "far" per tutte le stelle
+        stars.forEach(s => {
+            s.classList.remove('fa', 'fa-star', 'checked');
+            s.classList.add('far', 'fa-star');
+        });
 
-        // 7. Aggiungi "checked" a tutte le stelle <= del voto selezionato
+        // 7. Aggiungi "fa-star" e "checked" a tutte le stelle <= del voto selezionato
         stars.forEach(s => {
             if (parseInt(s.getAttribute('data-value')) <= value) {
-                s.classList.add('checked');
+                s.classList.remove('far');
+                s.classList.add('fa', 'checked');
             }
         });
     });

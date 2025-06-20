@@ -34,10 +34,10 @@
             <h2>Top Authors</h2>
             <div class="book-gallery flex gap-4">
                 <div class="author-item" th:each="author: ${topAuthors}">
-                    <div class="circle-container">
+                    <a class="circle-container" th:href="@{'/author/' + ${author.id}}">
                         <img th:src="${author.imageUrl}" th:href="@{'/author/' + ${author.id}}" alt="Author image" class="book-image"/>
-                    </div>
-                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${author.name}" th:href="@{'/author/' + ${author.id}}">Titolo</a>
+                    </a>
+                    <span style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${author.name}" th:href="@{'/author/' + ${author.id}}">Titolo</span>
                 </div>
             </div>
         </div>

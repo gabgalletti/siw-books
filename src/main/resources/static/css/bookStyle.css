@@ -8,13 +8,25 @@
 .add-to-favourites-section{
     margin-top: 2rem;
 }
+.book-content{
+    width: 80%;
+    max-width: 1600px;
+}
+.flex.book-content{
+    display: flex; /* Mantieni flex sul contenitore */
+    flex-direction: column;
+    justify-content: center; /* Centra orizzontalmente */
+    align-items: center;
+    margin: 3rem auto 0; /* Aggiungi un margine superiore di 3rem */
 
+}
 .flex.content-2{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: flex-start;
     width: 100%;
+    gap: 20px;
 }
 
 .content-left{
@@ -27,6 +39,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    border-left: 1px solid #ccc;
+    padding-left: 20px;
 }
 
 .title{
@@ -68,7 +82,7 @@
 }
 
 .star.checked {
-    color: orange;
+    color: orange !important;
 }
 .star-rating label {
     font-size: 20px;
@@ -77,4 +91,37 @@
 }
 input[type="radio"]:checked + label {
     color: orange;
+}
+
+.rating-section .fa-star {
+    color: black !important; /* Colore nero per stelle piene */
+}
+
+.rating-section .far.fa-star {
+    color: black !important; /* Colore nero per stelle vuote (outline) */
+}
+
+.rating-section .star {
+    font-size: 20px;
+    cursor: default;
+}
+
+#addToFavourites span{
+    font-size: 16px;
+}
+
+#addToFavourites{
+    padding: 1em;
+    border: 3px solid black;
+    background: transparent;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.far{
+    color: black;
+}
+
+.rating .star{
+    cursor: default;
 }

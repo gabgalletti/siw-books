@@ -1,0 +1,31 @@
+.textarea-description {
+    width: 100%; /* Dimensione del campo */
+    max-width: 600px; /* Larghezza massima del campo per evitare allungamenti */
+    height: auto; /* Altera l'altezza */
+    min-height: 100px; /* Altezza minima */
+    padding: 10px; /* Spazi interni */
+    resize: vertical; /* Permette di ridimensionare solo verticalmente */
+    font-family: "Noto Serif", "Noto Sans", sans-serif; /* Uniforma il font */
+}
+
+
+
+.textarea-container {
+    display: block; /* Rimuovi il comportamento di flexbox */
+    background-color: transparent; /* Rimuovi lo sfondo */
+    padding: 0; /* Rimuovi il padding */
+    height: auto; /* Rendi l'altezza dinamica */
+}
+
+.textarea-container textarea {
+    width: 100%; /* Larghezza al 100% */
+    max-width: 600px; /* Larghezza massima */
+    min-height: 100px; /* Altezza minima */
+    padding: 10px; /* Spazi interni */
+    background-color: #dcdcdc;
+    font-family: "Noto Serif", "Noto Sans", sans-serif; /* Font coerente */
+    font-size: 1rem;
+    border: none; /* Bordo per distinguere */
+    border-radius: 5px; /* Bordo arrotondato */
+}
+

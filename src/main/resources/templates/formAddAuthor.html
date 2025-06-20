@@ -2,27 +2,50 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
+    <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
     <title>Add new Author</title>
 </head>
-<body>
-<div class="title">
-    <h1>Add new Author</h1>
-</div>
-<form th:action="@{/author/new}" th:method="post" th:object="${author}" enctype="multipart/form-data">
-    <div class="form-group">
-        <label for="name">Name:</label>
-        <input type="text" id="name" name="name" class="form-control" th:value="${author.name}" required placeholder="Insert author name">
+<body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
+<header class="flex container">
+    <div class="flex items-center justify-start gap-9">
+        <h2>Siw Books</h2>
+        <a href="/home">Home</a>
+        <a href="/book/all">Books</a>
+        <a href="/author/all">Authors</a>
     </div>
-    <div class="form-group">
-        <label for="image">Image:</label>
-        <input type="file" id="image" name="image" class="form-control" accept=".png, .jpg, .jpeg">
+    <div class="flex justify-end gap-9">
+        <a class="padding" href="/login">Login</a>
     </div>
-    <div class="form-group">
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" class="form-control" th:text="${author.description}" required placeholder="Insert author description"></textarea>
-    </div>
+</header>
+<div class="flex book-content justify-start">
+        <div class="title">
+            <h1>Add new Author</h1>
+        </div>
+    <div class="flex content-left justify-start">
+    <form th:action="@{/author/new}" th:method="post" th:object="${author}" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <div class="search-container">
+                <input type="text" id="name" name="name" class="search-bar" th:value="${author.name}" required placeholder="Insert author name">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" class="form-control" accept=".png, .jpg, .jpeg">
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <div class="search-container textarea-container">
+                <textarea id="description" name="description" class="textarea-description" th:text="${author.description}" required placeholder="Insert author description"></textarea>
+            </div>
+        </div>
 
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+</div>
 </body>
 </html>

@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
     <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
     <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
-    <link rel="script" th:href="@{/js/bookScript.js}">
+    <script rel="script" th:src="@{/js/bookScript.js}" defer></script>
     <title th:if="${book != null}" th:text="${book.title}">Title</title>
 </head>
 <body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
@@ -22,7 +21,7 @@
             <a class="padding" href="/login">Login</a>
         </div>
     </header>
-<div class="flex content justify-start">
+<div class="flex book-content justify-start">
     <div class="title" th:if="${book != null}">
         <h1 th:text="${book.title}">Book Name</h1>
         <p th:text="${'Released in ' + book.year}"> (Year)</p>
@@ -46,11 +45,11 @@
                     <input type="hidden" id="rating" th:field="*{rating}" required>
 
                     <!-- Stelle cliccabili -->
-                    <i class="fa fa-star star" data-value="1"></i>
-                    <i class="fa fa-star star" data-value="2"></i>
-                    <i class="fa fa-star star" data-value="3"></i>
-                    <i class="fa fa-star star" data-value="4"></i>
-                    <i class="fa fa-star star" data-value="5"></i>
+                    <i class="far fa-star star" data-value="1"></i>
+                    <i class="far fa-star star" data-value="2"></i>
+                    <i class="far fa-star star" data-value="3"></i>
+                    <i class="far fa-star star" data-value="4"></i>
+                    <i class="far fa-star star" data-value="5"></i>
                 </div>
 
                 <label for="reviewDescription">Review:</label>
@@ -64,7 +63,7 @@
                 <div class="review-user" th:text="${review.user.surname}">User</div>
                 <div class="rating">
                     <span th:each="i : ${#numbers.sequence(1, 5)}">
-                        <i class="fa star" th:classappend="${i <= review.rating} ? 'fa-star checked' : 'fa-star-o'"></i>
+                        <i class="fa star" th:classappend="${i <= review.rating} ? 'fa-star checked' : 'far fa-star'"></i>
                     </span>
                 </div>
                 <div class="review-description" th:text="${review.reviewDescription}">Description</div>
@@ -76,20 +75,18 @@
                 <!-- Rating medio -->
                 <div th:if="${book != null}">
                     <h3>Rating</h3>
-                    <div id="star">
                         <span th:each="i : ${#numbers.sequence(1, 5)}">
-                            <i class="fa fa-star" th:classappend="${i <= averageRating} ? 'fa-star checked' : 'fa-star-o'"></i>
+                            <i class="fa star" th:classappend="${i <= T(java.lang.Math).round(book.averageRating)} ? 'fa fa-star' : 'far fa-star'"></i>
                         </span>
                         <span th:text="${averageRating != null ? ' (' + averageRating + ')': 'N.D.'}">(N.D.)</span>
-                    </div>
                 </div>
             </div>
             <div class="add-to-favourites-section">
                 <form th:action="@{'/book/' + ${book.id}}" method="post">
                     <input type="hidden" id="favourited" name="favourited" th:value="${favourited}"> <!-- Campo hidden -->
                     <button type="submit" id="addToFavourites">
-                        <span th:text="${favourited} ? 'Added to favourite' : 'Add to Favourites'"></span>
-                        <i class="fa fa-star" th:classappend="${favourited} ? 'fa-star checked' : 'fa-star-o'"></i>
+                        <span style='font-family: "Noto Serif", "Noto Sans", sans-serif;' th:text="${favourited} ? 'Added to favourite' : 'Add to Favourites'"></span>
+                        <i class="fa star" th:classappend="${favourited} ? 'fa fa-star checked' : 'far fa-star'"></i>
                     </button>
                 </form>
             </div>
