@@ -6,6 +6,7 @@
     <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
     <link rel="stylesheet" th:href="@{/css/formStyle.css}">
     <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
+    <script th:src="@{/js/formStyle.js}" defer></script>
     <title>Add new Author</title>
 </head>
 <body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
@@ -20,23 +21,25 @@
         <a class="padding" href="/login">Login</a>
     </div>
 </header>
-<div class="flex book-content justify-start">
+<div class="content flex flex-column" style="align-items: flex-start; width: 60%;">
         <div class="title">
             <h1>Add new Author</h1>
         </div>
-    <div class="flex content-left justify-start">
-    <form th:action="@{/author/new}" th:method="post" th:object="${author}" enctype="multipart/form-data">
-        <div class="form-group">
+    <form th:action="@{/author/new}" th:method="post" th:object="${author}" enctype="multipart/form-data" style="width: 100%">
+        <div class="form-group margin-bottom">
             <label for="name">Name:</label>
             <div class="search-container">
                 <input type="text" id="name" name="name" class="search-bar" th:value="${author.name}" required placeholder="Insert author name">
             </div>
         </div>
-        <div class="form-group">
-            <label for="image">Image:</label>
-            <input type="file" id="image" name="image" class="form-control" accept=".png, .jpg, .jpeg">
+        <div class="form-group margin-bottom">
+            <div class="attach-image">
+                <label for="image">Select An Image</label>
+                <span class="checkmark">✔️</span>
+                <input type="file" id="image" name="image" class="form-control" accept=".png, .jpg, .jpeg" onchange="showCheckmark(this)">
+            </div>
         </div>
-        <div class="form-group">
+        <div class="form-group margin-bottom">
             <label for="description">Description:</label>
             <div class="search-container textarea-container">
                 <textarea id="description" name="description" class="textarea-description" th:text="${author.description}" required placeholder="Insert author description"></textarea>
@@ -45,7 +48,6 @@
 
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
-    </div>
 </div>
 </body>
 </html>
