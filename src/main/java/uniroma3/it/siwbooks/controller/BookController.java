@@ -5,10 +5,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import uniroma3.it.siwbooks.model.Book;
 import uniroma3.it.siwbooks.model.Review;
@@ -29,7 +26,6 @@ public class BookController {
     @Autowired private ReviewService reviewService;
     @Autowired private CredentialsService credentialsService;
     @Autowired private UserService userService;
-    User user;
 
     @GetMapping("/book/{id}")
     public String book(@PathVariable("id") Long id,Model model){
@@ -53,26 +49,23 @@ public class BookController {
             model.addAttribute("error", "User not found");
             return "error"; // Pagina di errore (deve essere ancora implementata)
         }
-        this.user = userVerify;
+
         boolean hasReviewed = false;
-        if(!this.user.getReviews().isEmpty())
-            hasReviewed = reviewService.existsByUserAndBook(this.user, book);
+        if(!userService.getLoggedUser().getReviews().isEmpty())
+            hasReviewed = reviewService.existsByUserAndBook(userService.getLoggedUser(), book);
 
         if (hasReviewed) {
             // Se esiste la recensione, aggiungila al modello
-            Review review = reviewService.findByUserAndBook(this.user, book);
-            model.addAttribute("review", review);
         } else {
             // Se non esiste la recensione, prepara il form
-            model.addAttribute("newReview", new Review());
+
         }
 
         //Controllo se è uno dei libri preferiti
         boolean favourited = false;
-        if(this.user.getFavouriteBooks().contains(book))
+        if(userService.getLoggedUser().getFavouriteBooks().contains(book))
             favourited = true;
         model.addAttribute("favourited", favourited);
-
 
         model.addAttribute("book", book);
         model.addAttribute("hasReviewed", hasReviewed);
@@ -86,23 +79,27 @@ public class BookController {
         Book book = bookService.findById(id).get();
         favourited = !favourited; // Inverti lo stato
         if (favourited) {
-            this.user.getFavouriteBooks().add(book);
+            userService.getLoggedUser().getFavouriteBooks().add(book);
         } else {
-            this.user.getFavouriteBooks().remove(book);
+            userService.getLoggedUser().getFavouriteBooks().remove(book);
         }
 
         // Salva i cambiamenti
-        userService.save(user);
+        userService.save(userService.getLoggedUser());
 
         // Aggiorna il modello con il nuovo stato
         model.addAttribute("book", book);
-        model.addAttribute("favourited", user.getFavouriteBooks().contains(book)); // Inverti lo stato
+        model.addAttribute("favourited", userService.getLoggedUser().getFavouriteBooks().contains(book)); // Inverti lo stato
         return "redirect:/book/" + id; // Torna alla stessa pagina"; // Torna alla stessa pagina
 
     }
 
     @PostMapping("/book/{id}/saveReview")
-    public String saveReview(@PathVariable("id") Long id, Review newReview, Model model) {
+    public String saveReview(@PathVariable("id") Long id,
+                            @RequestParam("rating") int rating,
+                            @RequestParam("reviewDescription") String reviewDescription, Model model) {      //problema con id di dummyReview: viene passato un id = 1
+
+
         Optional<Book> bookOptional = bookService.findById(id);
         if (bookOptional.isEmpty()) {
             model.addAttribute("error", "Book not found");
@@ -110,20 +107,29 @@ public class BookController {
         }
         Book book = bookOptional.get();
 
-        // Assegna il libro e l'utente alla nuova recensione
-        newReview.setBook(book);
-        newReview.setUser(this.user);
-
-        // Controlla se la recensione esiste (facoltativo, per evitare duplicati lato applicazione)
-        if (reviewService.existsByUserAndBook(this.user, book)) {
-            model.addAttribute("error", "You have already reviewed this book");
+        User loggedUser = userService.getLoggedUser();
+        if (loggedUser == null) {
+            model.addAttribute("error", "User not found");
             return "error";
         }
-        book.getReviews().add(newReview);
-        // Salva la recensione
+
+        // Qui il controllo che hai già:
+        if (reviewService.existsByUserAndBook(loggedUser, book)) {
+            model.addAttribute("error", "You have already reviewed this book");
+            return "redirect:/book/" + id + "?error=alreadyReviewed"; // O la gestione errori che preferisci
+        }
+
+        // Ora crei esplicitamente una NUOVA istanza di Review
+        Review newReview = new Review();
+        newReview.setRating(rating);
+        newReview.setReviewDescription(reviewDescription);
+        newReview.setBook(book);
+        newReview.setUser(loggedUser);
+
+        // Salvi la nuova recensione
         reviewService.save(newReview);
 
-        List<Review> reviews = book.getReviews();
+        List<Review> reviews = reviewService.findByBook(book);
         double averageRating = 0.0;
         if (!reviews.isEmpty()) { // Controllo per evitare divisione per zero
             int sum = 0;
@@ -198,7 +204,6 @@ public class BookController {
         }
         Book book = bookOptional.get();
 
-        reviewService.deleteReviewsByBook(book);
         bookService.delete(book);
         return "redirect:/book/all";
     }

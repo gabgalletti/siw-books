@@ -6,37 +6,50 @@ import org.springframework.stereotype.Service;
 import uniroma3.it.siwbooks.model.Book;
 import uniroma3.it.siwbooks.model.Review;
 import uniroma3.it.siwbooks.model.User;
+import uniroma3.it.siwbooks.repository.BookRepository;
 import uniroma3.it.siwbooks.repository.ReviewRepository;
+import uniroma3.it.siwbooks.repository.UserRepository;
 
 import java.util.List;
 
 @Service
 public class ReviewService {
     @Autowired private ReviewRepository reviewRepository;
+    @Autowired private UserRepository userRepository;
+    @Autowired private BookRepository bookRepository;
+
+    public List<Review> findAll(){return reviewRepository.findAll();}
 
     public boolean existsByUserAndBook(User user, Book book){
         return findByUserAndBook(user, book) != null;
     }
-    public Review findByUserAndBook(User user, Book book){
-        return reviewRepository.findByUserAndBook(user, book);
+    public Review findByUserAndBook(User user, Book book) {
+        List<Review> reviews = reviewRepository.findByUserAndBook(user, book);
+        if (!reviews.isEmpty()) {
+            return reviews.get(0); // Return the first result if multiple exist
+        }
+        return null; // No review found
     }
 
-    public void save(Review newReview) {this.reviewRepository.save(newReview);}
+
+    @Transactional
+    public void save(Review review) {
+        //Assicurati che user e book siano caricati dal db e quindi managed
+        User managedUser = userRepository.findById(review.getUser().getId()).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        Book managedBook = bookRepository.findById(review.getBook().getId()).orElseThrow(() -> new IllegalArgumentException("Book not found"));
+        review.setUser(managedUser);
+        review.setBook(managedBook);
+        reviewRepository.save(review);
+    }
+
+
 
     @Transactional
     public void deleteReviewsByBook(Book book) {
-        List<Review> reviews = reviewRepository.findByBook(book);
+        this.reviewRepository.deleteByBook(book);
+    }
 
-        // Rimuovi il riferimento da user a review
-        for(Review review : reviews) {
-            User user = review.getUser();
-            if(user != null && user.getReviews() != null) {
-                user.getReviews().remove(review);
-            }
-        }
-
-        // Ora puoi eliminare le recensioni
-        reviewRepository.deleteAll(reviews);
-
+    public List<Review> findByBook(Book book) {
+        return this.reviewRepository.findByBook(book);
     }
 }

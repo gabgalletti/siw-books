@@ -69,7 +69,7 @@ public class AuthorController {
         return "redirect:/author/all";
     }
 
-    @GetMapping("/delete/author/{id}")
+    @GetMapping("/author/delete/{id}")
     public String deleteAuthor(@PathVariable("id") Long id, Model model) {
         Optional<Author> authorOptional = authorService.findById(id);
         if (authorOptional.isEmpty()) {

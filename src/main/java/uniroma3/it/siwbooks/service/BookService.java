@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import uniroma3.it.siwbooks.model.Book;
 import uniroma3.it.siwbooks.model.Review;
+import uniroma3.it.siwbooks.model.User;
 import uniroma3.it.siwbooks.repository.BookRepository;
 import uniroma3.it.siwbooks.repository.ReviewRepository;
 
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 @Service
 public class BookService{
     @Autowired private BookRepository bookRepository;
+    @Autowired
+    private ReviewService reviewService;
 
 
     @Transactional
@@ -67,6 +70,10 @@ public class BookService{
 
 
     public void delete(Book book) {
+        for(User u: book.getUsers())
+            u.getFavouriteBooks().remove(book);
+
+        reviewService.deleteReviewsByBook(book);
         this.bookRepository.delete(book);
     }
 

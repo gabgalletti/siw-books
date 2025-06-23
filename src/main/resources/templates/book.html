@@ -39,13 +39,13 @@
             </div>
             <div class="separator"></div>
 
-            <form th:if="${!hasReviewed}" th:action="@{'/book/' + ${book.id} + '/saveReview'}" th:object="${newReview}" method="post">
+            <form th:if="${!hasReviewed}" th:action="@{'/book/' + ${book.id} + '/saveReview'}" method="post">
                 <h3>Add your review</h3>
 
                 <label>Rating:</label><br>
                 <div id="stars">
                     <!-- Hidden input per il voto -->
-                    <input type="hidden" id="rating" th:field="*{rating}" required>
+                    <input type="hidden" id="rating" name="rating" value="0" required>
 
                     <!-- Stelle cliccabili -->
                     <i class="far fa-star star" data-value="1"></i>
@@ -56,7 +56,7 @@
                 </div>
                     <label for="reviewDescription">Review:</label>
                     <div class="search-container textarea-container margin-bottom">
-                        <textarea class="textarea-description" id="reviewDescription" style="width: 60%" th:field="*{reviewDescription}" required></textarea>
+                        <textarea class="textarea-description" id="reviewDescription" style="width: 60%" name="reviewDescription" required></textarea>
                     </div>
                 <button class="btn btn-primary" style="padding: 0.5em" type="submit">Save review</button>
             </form>

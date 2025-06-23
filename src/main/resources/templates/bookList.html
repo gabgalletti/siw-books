@@ -45,7 +45,7 @@
                         </div>
                     </div>
                 </a>
-                 <a  class="delete-icon" th:data-id="${book.id}" th:data-title="${book.title}" onclick="return confirmDeleteBook(this.getAttribute('data-id'), this.getAttribute('data-title'))">
+                 <a  class="delete-icon" th:if="${credentials.role == 'ADMIN'}" th:data-id="${book.id}" th:data-title="${book.title}" onclick="return confirmDeleteBook(this.getAttribute('data-id'), this.getAttribute('data-title'))">
                      <i class="fa-solid fa-trash"></i>
                  </a>
 

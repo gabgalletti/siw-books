@@ -6,6 +6,7 @@ import uniroma3.it.siwbooks.model.Author;
 import uniroma3.it.siwbooks.model.Book;
 import uniroma3.it.siwbooks.repository.AuthorRepository;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
 @Service
 public class AuthorService {
     @Autowired private AuthorRepository authorRepository;
+    @Autowired
+    private BookService bookService;
 
     public Optional<Author> findById(Long id) {return this.authorRepository.findById(id);}
 
@@ -68,7 +71,12 @@ public class AuthorService {
                 .collect(Collectors.toList());
     }
 
+
     public void delete(Author author) {
+        List<Book> booksToDelete = new ArrayList<>(author.getBooks());
+        for(Book b: booksToDelete)
+            bookService.delete(b);
+
         this.authorRepository.delete(author);
     }
 

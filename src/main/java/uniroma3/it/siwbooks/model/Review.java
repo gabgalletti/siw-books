@@ -2,24 +2,36 @@ package uniroma3.it.siwbooks.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 
 @Entity
-@IdClass(Review.class)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "book_id"}))
 public class Review {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private int rating;
     private String reviewDescription;
 
-    @Id
-    @ManyToOne
+
+    @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Id
-    @ManyToOne
+
+    @ManyToOne//(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH})
     @JoinColumn(name = "book_id")
     private Book book;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
 
     public int getRating() {
@@ -54,4 +66,15 @@ public class Review {
         this.book = book;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return Objects.equals(id, review.id) && Objects.equals(user, review.user) && Objects.equals(book, review.book);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, book);
+    }
 }
