@@ -6,6 +6,8 @@
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
     <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
     <link rel="stylesheet" th:href="@{/css/bookListStyle.css}">
+    <script th:src="@{/js/confirmDelete.js}"></script>
+    <script th:src="@{/js/search.js}"></script>
     <title>All Books</title>
 </head>
 <body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
@@ -16,13 +18,15 @@
             <a href="/author/all">Authors</a>
         </div>
         <div class="flex justify-end gap-9">
-            <a class="padding" href="/login">Login</a>
+            <a class="profile-icon" href="/profile">
+                <i class="fas fa-user-circle"></i>
+            </a>
         </div>
     </header>
     <div class="flex content">
         <div class="title">
             <h2>Books</h2>
-            <button class="add-content-button" onclick="window.location.href='/book/new'">
+            <button th:if="${credentials.role == 'ADMIN'}" class="add-content-button" onclick="window.location.href='/book/new'">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
@@ -31,7 +35,7 @@
             <input placeholder="Search for books" class="search-bar" value=""/>
         </div>
         <div th:if="${!#lists.isEmpty(books)}" class="content-list-container">
-             <div th:each="book : ${books}">
+             <div th:each="book : ${books}" class="content-list-item-wrapper">
                 <a class="content-list-item-link" th:href="@{'/book/' + ${book.id}}">
                     <div class="content-list-item">
                         <img class="content-thumbnail" th:src="${book.imageUrl}">
@@ -41,7 +45,11 @@
                         </div>
                     </div>
                 </a>
-            </div>
+                 <a  class="delete-icon" th:data-id="${book.id}" th:data-title="${book.title}" onclick="return confirmDeleteBook(this.getAttribute('data-id'), this.getAttribute('data-title'))">
+                     <i class="fa-solid fa-trash"></i>
+                 </a>
+
+             </div>
         </div>
     </div>
 </body>

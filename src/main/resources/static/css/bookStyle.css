@@ -41,6 +41,7 @@
     justify-content: flex-end;
     border-left: 1px solid #ccc;
     padding-left: 20px;
+    min-width: 200px;
 }
 
 .title{
@@ -102,7 +103,7 @@ input[type="radio"]:checked + label {
 }
 
 .rating-section .star {
-    font-size: 20px;
+    font-size: 20px!important;
     cursor: default;
 }
 
@@ -116,6 +117,7 @@ input[type="radio"]:checked + label {
     background: transparent;
     border-radius: 10px;
     cursor: pointer;
+    white-space: nowrap;
 }
 
 .far{
@@ -124,4 +126,59 @@ input[type="radio"]:checked + label {
 
 .rating .star{
     cursor: default;
+}
+.reviews .star, .average-rating .star {
+    font-size: 24px;
+    color: gray; /* Colore predefinito */
+    cursor: default; /* Disabilita il puntatore */
+}
+
+.reviews .star.checked, .average-rating .star.checked {
+    color: orange !important;
+}
+
+
+/* Stelle del form */
+#stars .star {
+    font-size: 20px;
+    color: gray;
+    cursor: pointer;
+}
+
+/* Stelle delle recensioni (read-only) */
+.reviews .star {
+    font-size: 20px;
+    color: gray;
+}
+
+.reviews .star.checked {
+    color: orange !important;
+}
+
+/* Colore di base per le stelle delle recensioni e del form (grigio) */
+.rating i, #stars i {
+    color: #d3d3d3; /* Grigio chiaro per le stelle vuote */
+}
+
+/* Colore per le stelle piene nelle recensioni e nel form */
+.rating i.fa.fa-star, #stars i.fa.fa-star {
+    color: #ffc107; /* Giallo/arancione per le stelle piene */
+}
+
+/* Assicurati che le stelle VUOTE nel form siano grigie */
+#stars i.far.fa-star, .rating i.far.fa-star {
+    color: #d3d3d3; /* Grigio per le stelle vuote nel form */
+}
+
+
+/* Override per le stelle dell'average rating - tutte nere */
+.average-rating i {
+    color: #000 !important; /* Nero per tutte le stelle dell'average rating */
+}
+
+/* Cursore a mano solo per le stelle del form */
+#stars i {
+    cursor: pointer;
+    font-size: 1.2rem;
+    margin-right: 5px;
 }

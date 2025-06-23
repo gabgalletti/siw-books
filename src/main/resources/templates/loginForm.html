@@ -2,41 +2,57 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
+    <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link rel="stylesheet" href="/css/style.css"> <!-- Opzionale: aggiungi il tuo CSS -->
 </head>
-<body>
-<div>
-    <h1>Login</h1>
+<body style="font-family: 'Noto Serif', 'Noto Sans', sans-serif;">
+<header class="flex container">
+    <div class="flex items-center justify-start gap-9">
+        <a href="/home">
+            <h2>Siw Books</h2>
+        </a>
+    </div>
+</header>
+<div class="content flex flex-column" style="align-items: flex-start; width: 60%; max-width: 800px;">
+    <div class="title">
+        <h1>Login</h1>
+    </div>
 
     <!-- Form di login -->
-    <form th:action="@{/login}" method="post">
-        <div>
+    <form th:action="@{/login}" method="post" style="width: 100%">
+        <div class="form-group margin-bottom">
             <label for="username">Username:</label>
-            <input type="text" id="username" name="username" required>
+            <div class="search-container">
+                <input class="search-bar" type="text" id="username" name="username" required>
+            </div>
         </div>
-        <div>
+        <div class="form-group margin-bottom">
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <div class="search-container">
+                <input class="search-bar" type="password" id="password" name="password" required>
+            </div>
         </div>
 
         <!-- Messaggio di errore -->
         <div th:if="${param.error}">
-            <p style="color:red;">Credenziali non valide. Riprova.</p>
+            <p style="color:red;">Credentials not valid, please try again.</p>
         </div>
 
         <!-- Logout riuscito -->
         <div th:if="${param.logout}">
-            <p style="color:green;">Logout effettuato con successo.</p>
+            <p style="color:green;">Logout successful.</p>
         </div>
 
         <div>
-            <button type="submit">Login</button>
+            <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </form>
 
-    <p>Non hai un account? <a th:href="@{/register}">Registrati qui</a></p>
+    <p>Don't have an account? <a style="text-decoration: underline" th:href="@{/register}">Register now!</a></p>
 </div>
 </body>
 </html>

@@ -14,11 +14,12 @@ public class Book {
     private Long id;
     private String title;
     private int year;
+    @Lob
     private String description;
     private String imageUrl;
 
 
-    @OneToMany
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     private double averageRating;

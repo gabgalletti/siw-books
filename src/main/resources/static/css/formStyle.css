@@ -33,7 +33,7 @@
 input[type="file"]{
     display: none;
 }
-.attach-image{
+.attach-image {
     padding: 0.5em;
     align-items: center;
     border: 3px solid black;
@@ -41,18 +41,66 @@ input[type="file"]{
     border-radius: 10px;
     width: min-content;
     cursor: pointer;
+    display: flex; /* Usato per disporre gli elementi orizzontalmente */
+    gap: 0.5em; /* Spaziatura tra label e checkmark */
+    white-space: nowrap;
 }
+
 .attach-image label{
     cursor: pointer;
     white-space: nowrap;
 }
 
 .attach-image .checkmark {
-    display: inline; /* Nascondi il checkmark di default */
+    display: none; /* Nascondi il checkmark di default */
     color: green;
     font-weight: bold;
-    font-size: 1.2em; /* Dimensiona il checkmark */
+    font-size: 1.5em; /* Dimensiona il checkmark */
+    vertical-align: middle;
+}
+
+/* Stile per il selettore del form */
+.form-select {
+    width: min-content; /* Larghezza a disposizione */
+    background-color: transparent; /* Colore di sfondo coerente */
+    padding: 0.7rem 1.5rem; /* Spaziatura interna per il testo */
+    border: 1px solid #dcdcdc; /* Bordo del selettore */
+    border-radius: 10px; /* Bordo arrotondato */
+    font-family: "Noto Serif", "Noto Sans", sans-serif; /* Famiglia font coerente */
+    font-size: 1rem; /* Dimensione del testo */
+    color: #333; /* Colore del testo */
+    cursor: pointer; /* Cambia il cursore in una freccia di selezione */
 }
 
 
+.form-select:hover {
+    border-color: #aaa;
+    background-color: #f5f5f5;
+}
+
+
+.form-select option {
+    font-family: "Noto Serif", "Noto Sans", sans-serif;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+}
+
+/* NON FUNZIONA*/
+.form-select option:hover {
+    background-color: #dcdcdc;
+}
+
+.form-group-row {
+    display: flex;
+    gap: 20px; /* Spazio tra gli elementi */
+}
+
+.form-group-row .form-group {
+    flex: 1; /* Adatta la larghezza dei campi */
+}
+
+.search-bar {
+    width: 100%; /* Campo a tutta larghezza nel contenitore */
+}
 

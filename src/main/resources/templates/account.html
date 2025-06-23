@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
+    <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/profileStyle.css}">
+
+    <title>Profile</title>
+</head>
+<body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
+<header class="flex container">
+    <div class="flex items-center justify-start gap-9">
+        <h2>Siw Books</h2>
+        <a href="/home">Home</a>
+        <a href="/book/all">Books</a>
+        <a href="/author/all">Authors</a>
+    </div>
+    <div class="flex justify-end gap-9">
+        <a class="profile-icon" href="/profile">
+            <i class="fas fa-user-circle"></i>
+        </a>
+    </div>
+</header>
+<div class="flex content">
+    <div class=" flex content-2">
+        <div class="content-left selection">
+            <a class="section details" th:href="@{'/profile'}">
+                <i class="fa fa-star" style="color: black;"></i>
+                <span>Favourite Books</span>
+            </a>
+            <a class="section" style="cursor: default">
+                <i class="fa fa-user" style="color: black;"></i>
+                <span>Account Details</span>
+            </a>
+        </div>
+        <div class="content-right">
+            <div class="title">
+                <h2>Account Details</h2>
+                <p th:if="${credentials.role == 'ADMIN'}">ADMIN</p>
+            </div>
+            <div class="flex justify-end">
+                <a th:href="@{'/profile/account/edit'}">
+                    <i class="fas fa-pen"></i>
+                </a>
+            </div>
+            <div class="form-group margin-bottom">
+                    <div class="form-group-row margin-bottom">
+                        <div class="form-group">
+                            <label>Name:</label>
+                            <div class="search-container default-cursor">
+                                <p class="search-bar" th:text="${user.name}">Name</p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Surname:</label>
+                            <div class="search-container default-cursor">
+                                <p class="search-bar" th:text="${user.surname}">Surname</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group margin-bottom">
+                        <label>Email:</label>
+                        <div class="search-container default-cursor">
+                            <p class="search-bar" th:text="${user.email}">Email</p>
+                        </div>
+                    </div>
+                    <div class="form-group margin-bottom">
+                        <label>Username:</label>
+                        <div class="search-container default-cursor">
+                            <p class="search-bar" th:text="${credentials.username}">Username</p>
+                        </div>
+                    </div>
+                    <div class="form-group margin-bottom">
+                        <label>Password:</label>
+                        <div class="search-container default-cursor">
+                            <p class="search-bar">********</p>
+                        </div>
+                    </div>
+            </div>
+            <div class="flex justify-center">
+                <a href="/logout" style="display: flex; align-items: center; gap: 0.5em;">
+                    <p style="color:red">Logout</p>
+                    <i class="fas fa-sign-out-alt" style="color: red"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

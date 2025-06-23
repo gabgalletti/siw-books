@@ -85,3 +85,26 @@
     background-color: #dcdcdc;
 }
 
+.content-list-item-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.content-list-item-wrapper .content-list-item-link {
+    flex-grow: 1;
+}
+
+.delete-icon {
+    margin-left: 10px;
+    color: #e74c3c;
+    font-size: 1.2rem;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.delete-icon:hover {
+    color: #c0392b;
+}

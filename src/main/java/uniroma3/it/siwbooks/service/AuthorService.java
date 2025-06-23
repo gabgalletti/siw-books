@@ -55,4 +55,21 @@ public class AuthorService {
                 .orElse(0.0); // Media dei rating o 0.0 se non ci sono valutazioni
     }
 
+    public List<Author> searchAuthorsByName(String keyword) {
+        List<Author> allAuthors = this.authorRepository.findAll();
+
+        if (keyword == null || keyword.isEmpty()) {
+            return allAuthors;
+        }
+
+        String lowerKeyword = keyword.toLowerCase();
+        return allAuthors.stream()
+                .filter(author -> author.getName().toLowerCase().contains(lowerKeyword))
+                .collect(Collectors.toList());
+    }
+
+    public void delete(Author author) {
+        this.authorRepository.delete(author);
+    }
+
 }

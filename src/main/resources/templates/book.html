@@ -6,6 +6,7 @@
     <link rel="stylesheet" as="style" onload="this.rel='stylesheet'" href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"/>
     <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
     <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
+    <link rel="stylesheet" th:href="@{/css/formStyle.css}">
     <script rel="script" th:src="@{/js/bookScript.js}" defer></script>
     <title th:if="${book != null}" th:text="${book.title}">Title</title>
 </head>
@@ -18,7 +19,9 @@
             <a href="/author/all">Authors</a>
         </div>
         <div class="flex justify-end gap-9">
-            <a class="padding" href="/login">Login</a>
+            <a class="profile-icon" href="/profile">
+                <i class="fas fa-user-circle"></i>
+            </a>
         </div>
     </header>
 <div class="flex book-content justify-start">
@@ -51,29 +54,31 @@
                     <i class="far fa-star star" data-value="4"></i>
                     <i class="far fa-star star" data-value="5"></i>
                 </div>
-
-                <label for="reviewDescription">Review:</label>
-                <textarea id="reviewDescription" th:field="*{reviewDescription}" required></textarea>
-
-                <button type="submit">Save review</button>
+                    <label for="reviewDescription">Review:</label>
+                    <div class="search-container textarea-container margin-bottom">
+                        <textarea class="textarea-description" id="reviewDescription" style="width: 60%" th:field="*{reviewDescription}" required></textarea>
+                    </div>
+                <button class="btn btn-primary" style="padding: 0.5em" type="submit">Save review</button>
             </form>
             <!--si potrebbe implementare la visione della recensione dell'utente attuale come prima recensione-->
             <h3 th:if="${!#lists.isEmpty(book.reviews)}">Reviews</h3>
-            <div class="reviews" th:if="${!#lists.isEmpty(book.reviews)}" th:each="review : ${book.reviews}">
-                <div class="review-user" th:text="${review.user.surname}">User</div>
-                <div class="rating">
-                    <span th:each="i : ${#numbers.sequence(1, 5)}">
-                        <i class="fa star" th:classappend="${i <= review.rating} ? 'fa-star checked' : 'far fa-star'"></i>
-                    </span>
+            <div class="review">
+                <div class="review margin-bottom" style="border-bottom: 1px solid #ccc; padding: 1em; width: 20%" th:if="${!#lists.isEmpty(book.reviews)}" th:each="review : ${book.reviews}">
+                    <div class="review-user" th:text="${review.user.name} + ' ' + ${review.user.surname}">User</div>
+                    <div class="rating margin-bottom">
+                        <span th:each="i : ${#numbers.sequence(1, 5)}">
+                            <i class="fa star" th:classappend="${i <= review.rating} ? 'fa fa-star' : 'far fa-star'"></i>
+                        </span>
+                    </div>
+                    <div class="review-description" th:text="${review.reviewDescription}">Description</div>
                 </div>
-                <div class="review-description" th:text="${review.reviewDescription}">Description</div>
             </div>
         </div>
         <!-- Sezione destra: rating e pulsante -->
         <div class="content-right">
             <div class="rating-section">
                 <!-- Rating medio -->
-                <div th:if="${book != null}">
+                <div class="average-rating" th:if="${book != null}">
                     <h3>Rating</h3>
                         <span th:each="i : ${#numbers.sequence(1, 5)}">
                             <i class="fa star" th:classappend="${i <= T(java.lang.Math).round(book.averageRating)} ? 'fa fa-star' : 'far fa-star'"></i>

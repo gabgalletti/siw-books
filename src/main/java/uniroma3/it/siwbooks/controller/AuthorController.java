@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import uniroma3.it.siwbooks.model.Author;
+import uniroma3.it.siwbooks.model.Book;
 import uniroma3.it.siwbooks.service.AuthorService;
+import uniroma3.it.siwbooks.service.CredentialsService;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,6 +22,8 @@ import java.util.Optional;
 @Controller
 public class AuthorController {
     @Autowired private AuthorService authorService;
+    @Autowired private CredentialsService credentialsService;
+
 
     @GetMapping("/author/{id}")
     public String author(@PathVariable("id") Long id, Model model){
@@ -33,6 +37,7 @@ public class AuthorController {
 
     @GetMapping("/author/all")
     public String authorList(Model model) {
+        model.addAttribute("credentials", credentialsService.getLoggedCredentials());
         model.addAttribute("authors", authorService.findAll());
         return "authorList";
     }
@@ -51,7 +56,7 @@ public class AuthorController {
         try{
             Path uploadPath = Paths.get("C:/Users/Gabriele/Desktop/uploads-siw-books/author-photo/");
             if (!Files.exists(uploadPath)) {
-               Files.createDirectories(uploadPath);
+                Files.createDirectories(uploadPath);
             }
             Path filePath = uploadPath.resolve(fileName);
             image.transferTo(filePath.toFile());
@@ -61,6 +66,18 @@ public class AuthorController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return "redirect:/author/all";
+    }
+
+    @GetMapping("/delete/author/{id}")
+    public String deleteAuthor(@PathVariable("id") Long id, Model model) {
+        Optional<Author> authorOptional = authorService.findById(id);
+        if (authorOptional.isEmpty()) {
+            model.addAttribute("error", "Author not found");
+            return "error";
+        }
+        Author author = authorOptional.get();
+        authorService.delete(author);
         return "redirect:/author/all";
     }
 }

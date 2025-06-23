@@ -16,7 +16,10 @@
             <a href="/author/all">Authors</a>
         </div>
         <div class="flex justify-end gap-9">
-            <a class="padding" href="/login">Login</a>
+            <a th:if="${!isLoggedIn}" class="padding" href="/login">Login</a>
+            <a th:if="${isLoggedIn}" class="profile-icon" href="/profile">
+                <i class="fas fa-user-circle"></i>
+            </a>
         </div>
     </header>
     <div class="flex content">
@@ -24,7 +27,9 @@
             <h2>Most Liked Books</h2>
             <div class="book-gallery flex gap-4">
                 <div class="book-item" th:each="book : ${mostLikedBooks}">
-                    <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
+                    <a th:href="@{'/book/' + ${book.id}}">
+                        <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
+                    </a>
                     <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book/' + ${book.id}}">Titolo</a>
                     <p th:text="'Favorited by ' + ${book.users.size()} + ' users'">N Like to this Book</p>
                 </div>
@@ -45,8 +50,10 @@
             <h2>New Releases</h2>
             <div class="book-gallery flex gap-4">
                 <div class="book-item" th:each="book : ${newBooks}">
-                    <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
-                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book' + ${book.id}}">Titolo</a>
+                    <a th:href="@{'/book/' + ${book.id}}">
+                        <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
+                    </a>
+                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book/' + ${book.id}}">Titolo</a>
                     <p th:text="${book.author.name}">Year</p>
                 </div>
             </div>

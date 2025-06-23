@@ -17,11 +17,13 @@ public class User {
     private String surname;
     private String email;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private List<Review> reviews;
 
     @ManyToMany
     private List<Book> favouriteBooks;
+
+
 
 
     public Long getId() {

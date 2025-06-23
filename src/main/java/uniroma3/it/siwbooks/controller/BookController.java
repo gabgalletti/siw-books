@@ -140,6 +140,7 @@ public class BookController {
 
     @GetMapping("/book/all")
     public String bookList(Model model){
+        model.addAttribute("credentials", credentialsService.getLoggedCredentials());
         model.addAttribute("books", bookService.findAll());
         return "bookList";
     }
@@ -176,9 +177,29 @@ public class BookController {
 
     @GetMapping("/home")
     public String home(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        boolean isLoggedIn = authentication != null && authentication.isAuthenticated() && !authentication.getPrincipal().equals("anonymousUser");
+
+        model.addAttribute("isLoggedIn", isLoggedIn);
+
+
         model.addAttribute("mostLikedBooks", bookService.findMostLiked());
         model.addAttribute("newBooks", bookService.findLatestBooks());
         model.addAttribute("topAuthors", authorService.findTopAuthors());
         return "home";
+    }
+
+    @GetMapping("/book/delete/{id}")
+    public String deleteBook(@PathVariable("id") Long id, Model model) {
+        Optional<Book> bookOptional = bookService.findById(id);
+        if (bookOptional.isEmpty()) {
+            model.addAttribute("error", "Book not found");
+            return "error";
+        }
+        Book book = bookOptional.get();
+
+        reviewService.deleteReviewsByBook(book);
+        bookService.delete(book);
+        return "redirect:/book/all";
     }
 }
