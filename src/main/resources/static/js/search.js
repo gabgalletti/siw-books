@@ -1,26 +1,25 @@
-// Versione corretta di search.js
+
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Seleziona l'input di ricerca
     const searchInput = document.querySelector('.search-bar');
 
-    if (!searchInput) return; // Esci se non c'è una barra di ricerca
+    if (!searchInput) return;
 
-    // Aggiungi un listener per l'evento input sulla barra di ricerca
+
     searchInput.addEventListener('input', function() {
-        // Ottieni il valore della ricerca e convertilo in minuscolo
+        // valore accettato in minuscolo
         const searchTerm = searchInput.value.toLowerCase().trim();
 
-        // Seleziona tutti i container degli elementi (i div che contengono i link)
+        // container degli elementi (i div che contengono i link)
         const itemContainers = document.querySelectorAll('.content-list-container > div');
 
         // Per ogni container
         itemContainers.forEach(function(container) {
-            // Ottieni il testo del titolo dall'elemento all'interno del container
+            // testo del titolo
             const titleElement = container.querySelector('.content-title-text');
             const title = titleElement ? titleElement.textContent.toLowerCase() : '';
 
-            // Ottieni il testo del sottotitolo (autore per i libri)
+            // testo del sottotitolo (autore per i libri)
             const subtitleElement = container.querySelector('.content-subtitle-text');
             const subtitle = subtitleElement ? subtitleElement.textContent.toLowerCase() : '';
 
@@ -32,7 +31,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 
-        // Mostra un messaggio se non ci sono risultati
         const visibleItems = document.querySelectorAll('.content-list-container > div[style=""]');
         const noResultsMessage = document.getElementById('no-results-message');
 

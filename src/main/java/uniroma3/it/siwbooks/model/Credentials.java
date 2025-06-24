@@ -2,6 +2,8 @@ package uniroma3.it.siwbooks.model;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 public class Credentials {
     public static final String ADMIN_ROLE = "ADMIN";
@@ -68,6 +70,18 @@ public class Credentials {
 
     public boolean isDefault() {
         return DEFAULT_ROLE.equals(role);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Credentials that = (Credentials) o;
+        return Objects.equals(id, that.id) && Objects.equals(username, that.username) && Objects.equals(password, that.password) && Objects.equals(role, that.role) && Objects.equals(user, that.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, role, user);
     }
 }
 

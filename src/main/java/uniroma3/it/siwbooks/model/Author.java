@@ -3,6 +3,7 @@ package uniroma3.it.siwbooks.model;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -78,5 +79,15 @@ public class Author {
         this.books = books;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Author author = (Author) o;
+        return yearOfBirth == author.yearOfBirth && yearOfDeath == author.yearOfDeath && Objects.equals(id, author.id) && Objects.equals(name, author.name) && Objects.equals(surname, author.surname) && Objects.equals(nationality, author.nationality);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, surname, yearOfBirth, yearOfDeath, nationality);
+    }
 }

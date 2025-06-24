@@ -11,6 +11,7 @@ import uniroma3.it.siwbooks.repository.ReviewRepository;
 import uniroma3.it.siwbooks.repository.UserRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ReviewService {
@@ -26,9 +27,9 @@ public class ReviewService {
     public Review findByUserAndBook(User user, Book book) {
         List<Review> reviews = reviewRepository.findByUserAndBook(user, book);
         if (!reviews.isEmpty()) {
-            return reviews.get(0); // Return the first result if multiple exist
+            return reviews.get(0);
         }
-        return null; // No review found
+        return null;
     }
 
 
@@ -42,6 +43,9 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
+    public Optional<Review> findById(Long id) {return reviewRepository.findById(id);}
+
+    public void delete(Review review) {reviewRepository.delete(review);}
 
 
     @Transactional

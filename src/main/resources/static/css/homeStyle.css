@@ -2,7 +2,7 @@ body{
     font-family: "Noto Serif", "Noto Sans", sans-serif;
 }
 header{
-    border-bottom: 1px solid #ccc; /* Linea sottile che divide l'header */
+    border-bottom: 1px solid #ccc;
 
 }
 a{
@@ -11,10 +11,10 @@ a{
 }
 
 .flex {
-    display: flex; /* Questo trasforma l'elemento in un flex container */
+    display: flex;
 }
 .container {
-    align-items: center;    /* Allinea gli elementi verticalmente */
+    align-items: center;
     justify-content: space-between;
 }
 .content{
@@ -22,11 +22,11 @@ a{
     max-width: 1000px;
 }
 .flex.content{
-    display: flex; /* Mantieni flex sul contenitore */
+    display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra orizzontalmente */
+    justify-content: center;
     align-items: center;
-    margin: 3rem auto 0; /* Aggiungi un margine superiore di 3rem */
+    margin: 3rem auto 0;
 
 }
 
@@ -37,7 +37,7 @@ a{
     justify-content: space-between;
 }
 .items-center {
-    align-items: center; /* Centra gli elementi lungo l'asse trasversale */
+    align-items: center;
 }
 .justify-start {
     justify-content: flex-start;
@@ -50,11 +50,11 @@ a{
 }
 
 .gap-4 {
-    gap: 1rem; /* Definisce uno spazio tra gli elementi */
+    gap: 1rem;
 }
 
 .gap-9 {
-    gap: 2.25rem; /* Spazio maggiore tra gli elementi */
+    gap: 2.25rem;
     margin-left: 15px;
     margin-right: 15px;
 }
@@ -88,38 +88,38 @@ a{
 
 .search-container {
     display: flex;
-    align-items: center; /* Per centrare verticalmente gli elementi */
+    align-items: center;
     width: 100%;
-    background-color: #dcdcdc; /* Sfondo chiaro */
-    border-radius: 5px; /* Bordo arrotondato */
-    padding: 0.5rem; /* Aggiungi spaziatura interna */
+    background-color: #dcdcdc;
+    border-radius: 5px;
+    padding: 0.5rem;
     height: 25px;
 }
 
 .search-container i {
-    color: #666; /* Colore dell'icona */
-    margin-right: 0.5rem; /* Distanza tra l'icona e la barra */
-    font-size: 1rem; /* Dimensione dell'icona */
+    color: #666;
+    margin-right: 0.5rem;
+    font-size: 1rem;
 }
 
 .search-container .search-bar {
-    flex: 1; /* L'input occupa il resto dello spazio */
-    border: none; /* Rimuovi il bordo */
-    outline: none; /* Rimuovi lo stile di focus del browser */
-    background-color: transparent; /* Sfondo trasparente */
+    flex: 1;
+    border: none;
+    outline: none;
+    background-color: transparent;
     font-family: "Noto Serif", "Noto Sans", sans-serif;
-    font-size: 1rem; /* Dimensione del testo */
+    font-size: 1rem;
 }
 
 .book-gallery {
     display: flex;
     justify-content: space-between;
     margin-top: 2rem;
-    flex-wrap: wrap; /* Permette di adattare i libri su schermi piccoli */
+    flex-wrap: wrap;
 }
 
 .book-item {
-    flex: 1 1 calc(25% - 1rem); /* 4 elementi per riga con margine */
+    flex: 1 1 calc(25% - 1rem);
     text-align: center;
 }
 
@@ -141,7 +141,7 @@ a{
     font-size: 0.9rem;
 }
 .author-item{
-    flex: 1 1 calc(20% - 1rem); /* 5 elementi per riga con margine */
+    flex: 1 1 calc(20% - 1rem);
     max-width: 180px;
     text-align: center;
 }
@@ -150,16 +150,16 @@ a{
     width: 100%;
     aspect-ratio: 1;
     text-align: center;
-    border-radius: 50%; /* Trasforma il contenitore in un cerchio */
-    overflow: hidden; /* Nasconde le parti dell'immagine fuori dal cerchio */
+    border-radius: 50%;
+    overflow: hidden;
     display: flex;
-    justify-content: center; /* Centra l'immagine orizzontalmente */
-    align-items: center; /* Centra l'immagine verticalmente */
+    justify-content: center;
+    align-items: center;
     border: 1px solid;
 }
 
 .circle-container img {
-    width: 100%; /* L'immagine si adatta completamente al contenitore */
+    width: 100%;
     height: 100%;
     object-fit: cover;
 }
@@ -167,7 +167,7 @@ a{
 .best-books,
 .top-authors,
 .new-books {
-    margin-top: 3rem; /* Aumenta la distanza tra le sezioni */
+    margin-top: 3rem;
 }
 
 .title{
@@ -199,22 +199,32 @@ a{
 .fa-pen:hover{
     color: white;
     background-color: black;
-    transition: 0.3s ease;
+    transition: 0.5s ease;
 }
-
-
+.fa-trash{
+    padding: 0.8em;
+    color: #e74c3c;
+    border-radius: 50%;
+    background-color: transparent;
+    cursor: pointer;
+}
+.fa-trash:hover {
+    color: white;
+    background-color: #e74c3c;
+    transition: 0.5s ease;
+}
 .profile-icon i {
-    font-size: 24px; /* Dimensiona l'icona */
-    color: #333; /* Colore dell'icona */
-    border-radius: 50%; /* Angoli arrotondati per creare una forma circolare */
-    background-color: #f5f5f5; /* Sfondo dell'icona */
-    padding: 10px; /* Spaziatura interna per rendere l'icona circolare */
-    transition: background-color 0.3s, color 0.3s; /* Effetto al passaggio del mouse */
+    font-size: 24px;
+    color: #333;
+    border-radius: 50%;
+    background-color: #f5f5f5;
+    padding: 10px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .profile-icon i:hover {
-    background-color: #333; /* Modifica lo sfondo quando il mouse è sopra */
-    color: #fff; /* Cambia il colore dell'icona quando il mouse è sopra */
+    background-color: #333;
+    color: #fff;
 }
 
 .default-cursor{

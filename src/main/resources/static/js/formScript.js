@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (fileInput && label) {
         fileInput.addEventListener('change', function () {
             if (this.files && this.files.length > 0) {
-                // Cambia il testo della label
                 label.textContent = 'Image Selected';
 
                 // Mostra il checkmark se esiste
@@ -14,10 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     checkmark.style.display = 'inline';
                 }
             } else {
-                // Ripristina il testo della label se non c'è alcun file selezionato
+
                 label.textContent = 'Select An Image';
 
-                // Nascondi il checkmark
+
                 if (checkmark) {
                     checkmark.style.display = 'none';
                 }

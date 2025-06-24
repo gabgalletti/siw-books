@@ -7,6 +7,8 @@
     <link rel="stylesheet" th:href="@{/css/homeStyle.css}">
     <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
     <link rel="stylesheet" th:href="@{/css/formStyle.css}">
+    <script th:src="@{/js/confirmDelete.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/bookListStyle.css}">
     <script rel="script" th:src="@{/js/bookScript.js}" defer></script>
     <title th:if="${book != null}" th:text="${book.title}">Title</title>
 </head>
@@ -19,9 +21,10 @@
             <a href="/author/all">Authors</a>
         </div>
         <div class="flex justify-end gap-9">
-            <a class="profile-icon" href="/profile">
+            <a th:if="${isLoggedIn}" class="profile-icon" href="/profile">
                 <i class="fas fa-user-circle"></i>
             </a>
+            <a th:if="${!isLoggedIn}" class="padding" href="/login">Login</a>
         </div>
     </header>
 <div class="flex book-content justify-start">
@@ -38,10 +41,31 @@
                 <p th:text="${book.description}">Book Description</p>
             </div>
             <div class="separator"></div>
-
-            <form th:if="${!hasReviewed}" th:action="@{'/book/saveReview/' + ${book.id}}" method="post">
+                <div class="review" th:if="${hasReviewed && isLoggedIn && userReview != null}">
+                    <h3>Your review</h3>
+                    <div class="content-list-item-wrapper">
+                    <div class="review margin-bottom content-list-item-link" style="border-bottom: 1px solid #ccc; padding: 1em; width: 20%">
+                        <div class="review-user" th:text="${userReview.user.name} + ' ' + ${userReview.user.surname}">User</div>
+                        <div class="review-user" style="white-space: nowrap;" th:text="${userReview.title}">Title</div>
+                        <div class="rating margin-bottom">
+                            <span th:each="i: ${#numbers.sequence(1, 5)}">
+                                <i class="fa star" th:classappend="${i <= userReview.rating} ? 'fa fa-star' : 'far fa-star'"></i>
+                            </span>
+                        </div>
+                        <div class="review-description" th:text="${userReview.reviewDescription}">Description</div>
+                    </div>
+                        <a class="fas fa-pen" th:href="@{'/review/edit/' + ${userReview.id}}"></a>
+                        <a th:data-id="${userReview.id}" th:data-title="${userReview.title}" onclick="return confirmDeleteReview(this.getAttribute('data-id'), this.getAttribute('data-title'))">
+                            <i class="fa-solid fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            <form th:if="${!hasReviewed && isLoggedIn}" th:action="@{'/book/saveReview/' + ${book.id}}" method="post">
                 <h3>Add your review</h3>
-
+                <label>Title:</label>
+                <div class="search-container">
+                    <input class="search-bar" type="text" id="title" name="title" required>
+                </div>
                 <label>Rating:</label><br>
                 <div id="stars">
                     <!-- Hidden input per il voto -->
@@ -56,15 +80,17 @@
                 </div>
                     <label for="reviewDescription">Review:</label>
                     <div class="search-container textarea-container margin-bottom">
-                        <textarea class="textarea-description" id="reviewDescription" style="width: 60%" name="reviewDescription" required></textarea>
+                        <textarea class="textarea-description" id="reviewDescription" style="width: 100%; max-width: 800px" name="reviewDescription" required></textarea>
                     </div>
                 <button class="btn btn-primary" style="padding: 0.5em" type="submit">Save review</button>
             </form>
-            <!--si potrebbe implementare la visione della recensione dell'utente attuale come prima recensione-->
-            <h3 th:if="${!#lists.isEmpty(book.reviews)}">Reviews</h3>
+            <!--si potrebbe implementare la visione della recensione dell'utente attuale come prima recensione--><!-- FATTO-->
+            <h3 th:if="${!#lists.isEmpty(reviews)}">Reviews</h3>
             <div class="review">
-                <div class="review margin-bottom" style="border-bottom: 1px solid #ccc; padding: 1em; width: 20%" th:if="${!#lists.isEmpty(book.reviews)}" th:each="review : ${book.reviews}">
+                <div class="content-list-item-wrapper" th:each="review : ${reviews}">
+                <div class="review margin-bottom content-list-item-link" style="border-bottom: 1px solid #ccc; padding: 1em; width: 100%">
                     <div class="review-user" th:text="${review.user.name} + ' ' + ${review.user.surname}">User</div>
+                    <div class="review-user" style="white-space: nowrap" th:text="${review.title}">Title</div>
                     <div class="rating margin-bottom">
                         <span th:each="i : ${#numbers.sequence(1, 5)}">
                             <i class="fa star" th:classappend="${i <= review.rating} ? 'fa fa-star' : 'far fa-star'"></i>
@@ -72,7 +98,11 @@
                     </div>
                     <div class="review-description" th:text="${review.reviewDescription}">Description</div>
                 </div>
+                <a th:if="${role == 'ADMIN'}" th:data-id="${review.id}" th:data-title="${review.title}" onclick="return confirmDeleteReview(this.getAttribute('data-id'), this.getAttribute('data-title'))">
+                    <i class="fa-solid fa-trash"></i>
+                </a>
             </div>
+        </div>
         </div>
         <!-- Sezione destra: rating e pulsante -->
         <div class="content-right">
@@ -87,7 +117,7 @@
                 </div>
             </div>
             <div class="add-to-favourites-section">
-                <form th:action="@{'/book/details/' + ${book.id}}" method="post">
+                <form th:if="${isLoggedIn}" th:action="@{'/book/details/' + ${book.id}}" method="post">
                     <input type="hidden" id="favourited" name="favourited" th:value="${favourited}"> <!-- Campo hidden -->
                     <button type="submit" id="addToFavourites">
                         <span style='font-family: "Noto Serif", "Noto Sans", sans-serif;' th:text="${favourited} ? 'Added to favourite' : 'Add to Favourites'"></span>

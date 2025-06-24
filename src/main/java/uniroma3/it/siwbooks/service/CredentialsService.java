@@ -17,9 +17,13 @@ public class CredentialsService {
     public Credentials findByUsername(String username) {return credentialsRepository.findByUsername(username).orElseThrow(() -> new IllegalArgumentException("Username not found"));}
 
     public Credentials getLoggedCredentials() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentUsername = authentication.getName();
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String currentUsername = authentication.getName();
+            return findByUsername(currentUsername);
+        } catch (Exception e) {
+            return null;
+        }
 
-        return findByUsername(currentUsername);
     }
 }

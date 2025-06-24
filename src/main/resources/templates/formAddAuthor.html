@@ -8,7 +8,6 @@
     <link rel="stylesheet" th:href="@{/css/formStyle.css}">
     <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
     <script rel="script" th:src="@{/js/formScript.js}" defer></script>
-    <script rel="script" th:src="@{'/js/AddAuthors.js'}" defer></script>
     <title>Add new Author</title>
 </head>
 <body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
@@ -27,20 +26,20 @@
 </header>
 <div class="content flex flex-column" style="align-items: flex-start; width: 60%;">
         <div class="title">
-            <h1>Add new Author</h1>
+            <h1 th:text="${author.id} != null ? 'Edit Author' : 'Add New Author'"></h1>
         </div>
-    <form th:action="@{/author/new}" th:method="post" th:object="${author}" enctype="multipart/form-data" style="width: 100%">
+    <form th:action="${author.id} != null ? @{/author/edit/{id}(id=${author.id})} : @{/author/new}" th:method="${author.id} != null ? 'post' : 'post'" th:object="${author}" enctype="multipart/form-data" style="width: 100%">
         <div class="form-group-row margin-bottom">
             <div class="form-group">
                 <label for="name">Name:</label>
                 <div class="search-container">
-                    <input type="text" id="name" name="name" class="search-bar" th:value="${author.name}" required placeholder="Insert author name">
+                    <input type="text" id="name" name="name" class="search-bar" th:value="${author.name}" th:placeholder="${author.name}" required placeholder="Insert author name">
                 </div>
             </div>
             <div class="form-group">
                 <label for="surname">Surname:</label>
                 <div class="search-container">
-                    <input type="text" id="surname" name="surname" class="search-bar" th:value="${author.surname}" required placeholder="Insert author surname">
+                    <input type="text" id="surname" name="surname" class="search-bar" th:value="${author.surname}" th:placeholder="${author.surname}" required placeholder="Insert author surname">
 
                 </div>
             </div>
@@ -49,17 +48,17 @@
             <div class="form-group">
                 <label for="yearOfBirth">Birth Date:</label>
                 <div class="search-container">
-                    <input type="number" id="yearOfBirth" name="yearOfBirth" class="search-bar" th:value="${author.yearOfBirth}" required placeholder="Insert author birth date">
+                    <input type="number" id="yearOfBirth" name="yearOfBirth" class="search-bar" th:value="${author.yearOfBirth}" th:placeholder="${author.yearOfBirth}" required placeholder="Insert author birth date">
                 </div>
             </div>
             <div class="form-group">
                 <label for="yearOfDeath">Death Date:</label>
                 <div class="search-container">
-                    <input type="number" id="yearOfDeath" name="yearOfDeath" class="search-bar" th:value="${author.yearOfDeath}" placeholder="Insert author death date">
+                    <input type="number" id="yearOfDeath" name="yearOfDeath" class="search-bar" th:value="${author.yearOfDeath}" th:placeholder="${author.yearOfDeath}" placeholder="Insert author death date">
                 </div>
             </div>
         </div>
-        <div class="form-group margin-bottom">
+        <div class="form-group margin-bottom" th:if="${author.id} == null">
             <label for="image">Image:</label>
             <div class="attach-image items-center">
                 <label for="image">Select An Image</label>
@@ -68,13 +67,19 @@
             </div>
         </div>
         <div class="form-group margin-bottom">
+            <label for="nationality">Nationality:</label>
+            <div class="search-container">
+                <input type="text" id="nationality" name="nationality" class="search-bar" th:value="${author.nationality}" th:placeholder="${author.nationality}" required placeholder="Insert author nationality">
+            </div>
+        </div>
+        <div class="form-group margin-bottom">
             <label for="description">Description:</label>
             <div class="search-container textarea-container">
-                <textarea id="description" name="description" class="textarea-description" th:text="${author.description}" required placeholder="Insert author description"></textarea>
+                <textarea id="description" name="description" class="textarea-description" th:text="${author.description}" th:placeholder="${author.description}"   required placeholder="Insert author description"></textarea>
             </div>
         </div>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" th:text="${author.id} != null ? 'Save Changes' : 'Add Author'" class="btn btn-primary">Submit</button>
     </form>
 </div>
 </body>

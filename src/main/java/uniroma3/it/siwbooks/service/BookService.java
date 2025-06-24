@@ -32,16 +32,15 @@ public class BookService{
     public void save(Book book) {this.bookRepository.save(book);}
 
     public List<Book> findMostLiked() {
-        Iterable<Book> allBooks = this.findAll(); // Recupera tutti i libri
+        Iterable<Book> allBooks = this.findAll();
         List<Book> booksList = new ArrayList<>();
-        allBooks.forEach(booksList::add); // Converte Iterable in una lista
+        allBooks.forEach(booksList::add); // converte Iterable in una lista
 
-        // Ordina i libri secondo averageRating in ordine decrescente,
-        // e in caso di parità, secondo il numero di utenti che li preferiscono
         booksList.sort(Comparator
-                .comparingDouble(Book::getAverageRating).reversed() // Ordina per averageRating decrescente
-                .thenComparing(book -> book.getUsers() != null ? -book.getUsers().size() : 0) // Se stessi rating, ordina per numero di utenti decrescente
+                .comparing((Book book) -> book.getUsers() != null ? book.getUsers().size() : 0).reversed()
+                .thenComparingDouble(Book::getAverageRating).reversed()
         );
+
 
         return booksList.size() > 4 ? booksList.subList(0, 4) : booksList;
     }
@@ -49,8 +48,8 @@ public class BookService{
     public List<Book> findLatestBooks() {
         List<Book> booksList = new ArrayList<>();
         this.bookRepository.findAll().forEach(booksList::add);
-        booksList.sort(Comparator.comparing(Book::getCreatedAt).reversed()); // Ordina per data decrescente
-        return booksList.size() > 4 ? booksList.subList(0, 4) : booksList; // Ritorna massimo 4 libri
+        booksList.sort(Comparator.comparing(Book::getCreatedAt).reversed());
+        return booksList.size() > 4 ? booksList.subList(0, 4) : booksList;
     }
 
     @Transactional

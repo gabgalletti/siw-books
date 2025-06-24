@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
 import uniroma3.it.siwbooks.model.Author;
 import uniroma3.it.siwbooks.model.Book;
+import uniroma3.it.siwbooks.model.Credentials;
 import uniroma3.it.siwbooks.service.AuthorService;
 import uniroma3.it.siwbooks.service.CredentialsService;
 
@@ -32,12 +33,26 @@ public class AuthorController {
             model.addAttribute("author", author.get());
         else
             model.addAttribute("author", new Author());
+
+        Credentials loggedCredentials = credentialsService.getLoggedCredentials();
+        if(loggedCredentials == null){
+            model.addAttribute("isLoggedIn", false);
+        } else {
+            model.addAttribute("isLoggedIn", true);
+        }
         return "author";
     }
 
     @GetMapping("/author/all")
     public String authorList(Model model) {
-        model.addAttribute("credentials", credentialsService.getLoggedCredentials());
+        Credentials credentials = credentialsService.getLoggedCredentials();
+        if (credentials == null) {
+            model.addAttribute("isLoggedIn", false);
+            model.addAttribute("role", "NOROLE");
+        } else{
+            model.addAttribute("isLoggedIn", true);
+            model.addAttribute("role", credentials.getRole());
+        }
         model.addAttribute("authors", authorService.findAll());
         return "authorList";
     }
@@ -69,6 +84,31 @@ public class AuthorController {
         return "redirect:/author/all";
     }
 
+    @GetMapping("/author/edit/{id}")
+    public String showEditAuthorForm(@PathVariable Long id, Model model) {
+        Author author = authorService.findById(id).get();
+        model.addAttribute("author", author);
+        return "formAddAuthor";
+    }
+    @PostMapping("/author/edit/{id}")
+    public String updateAuthor(@PathVariable Long id,
+                               @ModelAttribute("author") Author updatedAuthor,
+                               Model model){
+        Optional<Author> authorOptional = authorService.findById(id);
+        if (authorOptional.isEmpty()) {
+            model.addAttribute("error", "Author not found");
+            return "error";
+        }
+        Author author = authorOptional.get();
+        author.setName(updatedAuthor.getName());
+        author.setSurname(updatedAuthor.getSurname());
+        author.setYearOfBirth(updatedAuthor.getYearOfBirth());
+        author.setYearOfDeath(updatedAuthor.getYearOfDeath());
+        author.setNationality(updatedAuthor.getNationality());
+        author.setDescription(updatedAuthor.getDescription());
+        authorService.save(author);
+        return "redirect:/author/all";
+    }
     @GetMapping("/author/delete/{id}")
     public String deleteAuthor(@PathVariable("id") Long id, Model model) {
         Optional<Author> authorOptional = authorService.findById(id);

@@ -18,25 +18,32 @@
             <a href="/author/all">Authors</a>
         </div>
         <div class="flex justify-end gap-9">
-            <a class="profile-icon" href="/profile">
+            <a th:if="${isLoggedIn}" class="profile-icon" href="/profile">
                 <i class="fas fa-user-circle"></i>
             </a>
+            <a th:if="${!isLoggedIn}" class="padding" href="/login">Login</a>
         </div>
     </header>
     <div class="flex book-content justify-start">
         <div class="title" th:if="${author != null}">
             <h1 th:text="${author.name + ' ' + author.surname}">Author Name</h1>
-            <p th:text="${author.yearOfBirth + ' - ' + author.yearOfDeath}"></p>
-        </div>
-        <div class="content-left">
-            <img class="author-image justify-start" th:if="${author != null and author.imageUrl != null}" th:src="${author.imageUrl}">
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <span th:text="${author.yearOfBirth}">BirthDate</span>
+                <span th:if="${author.yearOfDeath != null && author.yearOfDeath > author.yearOfBirth}" th:text="${'- ' + author.yearOfDeath}">DeathDate</span>
+            </div>
 
+        </div>
+        <div class="content-left" style="width: 100%;">
+            <img class="author-image justify-start" th:if="${author != null and author.imageUrl != null}" th:src="${author.imageUrl}">
+            <div class="margin-top" style="white-space: nowrap">
+                Nationality: <span th:text="${author.nationality}">Nationality</span>
+            </div>
             <div class="description">
                 <p th:text="${author.description}"></p>
             </div>
             <div th:if="${!#lists.isEmpty(author.books)}" class="content-list-container">
                 <div th:each="book : ${author.books}">
-                    <a class="content-list-item-link" th:href="@{'/book/' + ${book.id}}">
+                    <a class="content-list-item-link" th:href="@{'/book/details/' + ${book.id}}">
                         <div class="content-list-item">
                             <img class="content-thumbnail" th:src="${book.imageUrl}">
                             <div class="content-details">

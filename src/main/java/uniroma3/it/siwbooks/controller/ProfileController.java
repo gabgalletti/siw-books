@@ -41,19 +41,17 @@ public class ProfileController {
         Credentials loggedCredentials = credentialsService.getLoggedCredentials();
         User existingUser = loggedCredentials.getUser();
 
-        // Aggiorna solo i campi necessari dell'utente esistente
         existingUser.setName(updatedUserData.getName());
         existingUser.setSurname(updatedUserData.getSurname());
         existingUser.setEmail(updatedUserData.getEmail());
-        // Aggiungi qui eventuali altri campi che desideri aggiornare
 
-        // Aggiorna i campi delle credenziali
+        // aggiornamento campi delle credenziali
         loggedCredentials.setUsername(updatedCredentials.getUsername());
         if (updatedCredentials.getPassword() != null && !updatedCredentials.getPassword().isEmpty()) {
             loggedCredentials.setPassword(passwordEncoder.encode(updatedCredentials.getPassword()));
         }
 
-        // Salva le credenziali aggiornate con l'utente aggiornato
+
         credentialsService.save(loggedCredentials);
 
         return "redirect:/profile";

@@ -7,16 +7,15 @@ import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import uniroma3.it.siwbooks.model.Author;
-import uniroma3.it.siwbooks.model.Book;
-import uniroma3.it.siwbooks.model.Review;
-import uniroma3.it.siwbooks.model.User;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import uniroma3.it.siwbooks.model.*;
 import uniroma3.it.siwbooks.service.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -29,45 +28,63 @@ public class BookController {
     @Autowired private UserService userService;
 
     @GetMapping("/book/details/{id}")
-    public String book(@PathVariable("id") Long id,Model model){
+    public String book(@PathVariable("id") Long id, Model model) {
         Optional<Book> bookOptional = bookService.findById(id);
         if (bookOptional.isEmpty()) {
             model.addAttribute("error", "Book not found");
-            return "error"; // Pagina di errore (deve essere ancora implementata)
+            return "error";
         }
         Book book = bookOptional.get();
+        List<Review> reviews = reviewService.findByBook(book);
+        double averageRating = 0.0;
+        if (!reviews.isEmpty()) {
+            int sum = 0;
+            for (Review r : reviews) {
+                sum += r.getRating();
+            }
+            averageRating = (double) sum / reviews.size();
+        }
+        book.setAverageRating(averageRating);
+        bookService.save(book);
+
+        // Controllo delle credenziali dell'utente loggato
+        Credentials loggedCredentials = credentialsService.getLoggedCredentials();
+        if (loggedCredentials == null) {
+            model.addAttribute("isLoggedIn", false);
+            model.addAttribute("book", book);
+            model.addAttribute("hasReviewed", false);
+            model.addAttribute("favourited", false); // non essendo loggati, non esiste "preferito"
+            model.addAttribute("userReview", null);
+            model.addAttribute("reviews", book.getReviews());
+            model.addAttribute("role", "NOROLE");
+            return "book";
+        }
+
+        User userVerify = loggedCredentials.getUser();
+        model.addAttribute("isLoggedIn", true);
+
+        boolean hasReviewed = false;
+        if (!userService.getLoggedUser().getReviews().isEmpty())
+            hasReviewed = reviewService.existsByUserAndBook(userService.getLoggedUser(), book);
+
+        List<Review> almostAllReviews = book.getReviews();
+        if (hasReviewed) {
+
+            Review userReview = reviewService.findByUserAndBook(userService.getLoggedUser(), book);
+            model.addAttribute("userReview", userReview);
+            almostAllReviews.remove(userReview);
+            model.addAttribute("reviews", almostAllReviews);
+        } else {
+            model.addAttribute("userReview", null);
+            model.addAttribute("reviews", almostAllReviews);
+        }
+        // Controllo se è uno dei libri preferiti
+        model.addAttribute("role", loggedCredentials.getRole());
+        boolean favourited = userService.getLoggedUser().getFavouriteBooks().contains(book);
+        model.addAttribute("favourited", favourited);
 
 
         model.addAttribute("averageRating", book.getAverageRating());
-
-
-
-        //ricavo utente loggato
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName();
-        User userVerify = credentialsService.findByUsername(username).getUser();
-        if(userVerify == null){
-            model.addAttribute("error", "User not found");
-            return "error"; // Pagina di errore (deve essere ancora implementata)
-        }
-
-        boolean hasReviewed = false;
-        if(!userService.getLoggedUser().getReviews().isEmpty())
-            hasReviewed = reviewService.existsByUserAndBook(userService.getLoggedUser(), book);
-
-        if (hasReviewed) {
-            // Se esiste la recensione, aggiungila al modello
-        } else {
-            // Se non esiste la recensione, prepara il form
-
-        }
-
-        //Controllo se è uno dei libri preferiti
-        boolean favourited = false;
-        if(userService.getLoggedUser().getFavouriteBooks().contains(book))
-            favourited = true;
-        model.addAttribute("favourited", favourited);
-
         model.addAttribute("book", book);
         model.addAttribute("hasReviewed", hasReviewed);
 
@@ -78,26 +95,72 @@ public class BookController {
                                   @ModelAttribute("favourited") boolean favourited,
                                   Model model) {
         Book book = bookService.findById(id).get();
-        favourited = !favourited; // Inverti lo stato
+        favourited = !favourited; // inversione del valore
         if (favourited) {
             userService.getLoggedUser().getFavouriteBooks().add(book);
         } else {
             userService.getLoggedUser().getFavouriteBooks().remove(book);
         }
 
-        // Salva i cambiamenti
+
+
+
         userService.save(userService.getLoggedUser());
 
-        // Aggiorna il modello con il nuovo stato
+
         model.addAttribute("book", book);
-        model.addAttribute("favourited", userService.getLoggedUser().getFavouriteBooks().contains(book)); // Inverti lo stato
-        return "redirect:/book/details/" + id; // Torna alla stessa pagina"; // Torna alla stessa pagina
+        model.addAttribute("favourited", userService.getLoggedUser().getFavouriteBooks().contains(book));
+        return "redirect:/book/details/" + id;
 
     }
+    @GetMapping("/book/edit/{id}")
+    public String showEditBookForm(@PathVariable Long id, Model model) {
+        Book book = bookService.findById(id).get();
+        model.addAttribute("book", book);
+        model.addAttribute("authors", authorService.findAll());
+        return "formAddBook";
+    }
+    @PostMapping("/book/edit/{id}")
+    public String updateBook(@PathVariable Long id,
+                             @ModelAttribute("book") Book updatedBook,
+                             @RequestParam(value = "authors[]", required = false) List<Long> authorsIds,
+                             RedirectAttributes redirectAttributes) {
+        Optional<Book> optionalBook = bookService.findById(id);
+        if (optionalBook.isEmpty()) {
+            redirectAttributes.addFlashAttribute("error", "Libro non trovato!");
+            return "redirect:/book/all";
+        }
+
+        Book existingBook = optionalBook.get();
+
+
+        existingBook.setTitle(updatedBook.getTitle());
+        existingBook.setYear(updatedBook.getYear());
+        existingBook.setDescription(updatedBook.getDescription());
+
+        // aggiornamento autori associati
+        if (authorsIds != null && !authorsIds.isEmpty()) {
+            for(Author a: authorService.findByIds(authorsIds)) {
+                a.getBooks().add(existingBook);
+                existingBook.getAuthors().add(a);
+            }
+        } else {
+            existingBook.setAuthors(new ArrayList<>());
+        }
+
+
+        bookService.save(existingBook);
+
+
+
+        return "redirect:/book/all";
+    }
+
 
     @PostMapping("/book/saveReview/{id}")
     public String saveReview(@PathVariable("id") Long id,
                             @RequestParam("rating") int rating,
+                            @RequestParam("title") String title,
                             @RequestParam("reviewDescription") String reviewDescription, Model model) {      //problema con id di dummyReview: viene passato un id = 1
 
 
@@ -117,11 +180,12 @@ public class BookController {
         // Qui il controllo che hai già:
         if (reviewService.existsByUserAndBook(loggedUser, book)) {
             model.addAttribute("error", "You have already reviewed this book");
-            return "redirect:/book/details/" + id + "?error=alreadyReviewed"; // O la gestione errori che preferisci
+            return "redirect:/book/details/" + id + "?error=alreadyReviewed";
         }
 
         // Ora crei esplicitamente una NUOVA istanza di Review
         Review newReview = new Review();
+        newReview.setTitle(title);
         newReview.setRating(rating);
         newReview.setReviewDescription(reviewDescription);
         newReview.setBook(book);
@@ -130,16 +194,7 @@ public class BookController {
         // Salvi la nuova recensione
         reviewService.save(newReview);
 
-        List<Review> reviews = reviewService.findByBook(book);
-        double averageRating = 0.0;
-        if (!reviews.isEmpty()) { // Controllo per evitare divisione per zero
-            int sum = 0;
-            for (Review r : reviews) {
-                sum += r.getRating();
-            }
-            averageRating = (double) sum / reviews.size();
-        }
-        book.setAverageRating(averageRating);
+
         bookService.save(book);
         return "redirect:/book/details/" + id;
 
@@ -147,7 +202,15 @@ public class BookController {
 
     @GetMapping("/book/all")
     public String bookList(Model model){
-        model.addAttribute("credentials", credentialsService.getLoggedCredentials());
+        Credentials loggedCredentials = credentialsService.getLoggedCredentials();
+        if(loggedCredentials == null){
+            model.addAttribute("isLoggedIn", false);
+            model.addAttribute("role", "NOROLE");
+        } else {
+            model.addAttribute("isLoggedIn", true);
+            model.addAttribute("role", loggedCredentials.getRole());
+        }
+
         model.addAttribute("books", bookService.findAll());
         return "bookList";
     }
@@ -155,6 +218,9 @@ public class BookController {
 
     @GetMapping("/book/new")
     public String bookNew(Model model){
+        List<Author> authors = new ArrayList<>();
+        authorService.findAll().forEach(authors::add);
+        model.addAttribute("authors", authors);
         model.addAttribute("book", new Book());
         model.addAttribute("authors", authorService.findAll());
         return "formAddBook";
@@ -162,7 +228,7 @@ public class BookController {
 
     @PostMapping("/book/new")
     public String bookNew(Book book,
-                          @RequestParam("authors") List<Long> authorsIds,
+                          @RequestParam(value = "authors[]", required = false) List<Long> authorsIds,
                           @ModelAttribute("image")MultipartFile image,
                           Model model) {
         List<Author> authors = authorService.findByIds(authorsIds);
@@ -210,5 +276,72 @@ public class BookController {
 
         bookService.delete(book);
         return "redirect:/book/all";
+    }
+    @GetMapping("review/edit/{id}")
+    public String editReview(@PathVariable("id") Long id, Model model) {
+        Optional<Review> reviewOptional = reviewService.findById(id);
+        if (reviewOptional.isEmpty()) {
+            model.addAttribute("error", "Review not found");
+            return "error";
+        }
+        Review review = reviewOptional.get();
+        model.addAttribute("review", review);
+        return "formEditReview";
+    }
+    @PostMapping("review/edit/{id}")
+    public String editReview(@PathVariable("id") Long id,
+                             @RequestParam("rating") int rating,
+                             @RequestParam("title") String title,
+                             @RequestParam("reviewDescription") String reviewDescription, Model model) {
+        Optional<Review> reviewOptional = reviewService.findById(id);
+        if (reviewOptional.isEmpty()) {
+            model.addAttribute("error", "Review not found");
+            return "error";
+        }
+        Review review = reviewOptional.get();
+        if(credentialsService.getLoggedCredentials().getUser().getId().equals(review.getUser().getId())){
+            review.setTitle(title);
+            review.setRating(rating);
+            review.setReviewDescription(reviewDescription);
+            review.setBook(review.getBook());
+            review.setUser(review.getUser());
+            reviewService.save(review);
+            bookService.save(review.getBook());
+            List<Review> reviews = reviewService.findAll();
+        } else {
+            model.addAttribute("error", "You can't edit this review");
+            return "error";
+        }
+        return "redirect:/book/details/" + review.getBook().getId();
+    }
+    @GetMapping("/review/delete/{id}")
+    public String deleteReview(@PathVariable("id") Long id, Model model) {
+        Optional<Review> reviewOptional = reviewService.findById(id);
+        if (reviewOptional.isEmpty()) {
+            model.addAttribute("error", "Review not found");
+            return "error";
+        }
+        Review review = reviewOptional.get();
+
+        Credentials credentials = credentialsService.getLoggedCredentials();
+        if (credentials == null) {
+            model.addAttribute("error", "User not found");
+        }
+        User user = credentials.getUser();
+        if (!user.getReviews().contains(review) && !credentials.getRole().equals("ADMIN")) {
+            model.addAttribute("error", "You can't delete this review");
+            return "error";
+        } else if(user.getReviews().contains(review)){
+            user.getReviews().remove(review);
+        } else if(credentials.getRole().equals("ADMIN")){
+            User userTemp = review.getUser();
+            userTemp.getReviews().remove(review);
+        }
+        List<Review> reviews = reviewService.findAll();
+        reviews.remove(review);
+        reviewService.delete(review);
+
+
+        return "redirect:/book/details/" + review.getBook().getId();
     }
 }

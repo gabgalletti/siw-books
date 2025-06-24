@@ -12,3 +12,10 @@ function confirmDeleteAuthor(authorId, authorName) {
     }
     return false;
 }
+function confirmDeleteReview(reviewId, reviewTitle) {
+    if (confirm('Sei sicuro di voler eliminare la recensione "' + reviewTitle + '"?')) {
+        window.location.href = '/review/delete/' + reviewId;
+        return true;
+    }
+    return false;
+}

@@ -1,34 +1,32 @@
-/* C:/Users/Gabriele/IdeaProjects/siw-books/src/main/resources/static/css/formStyle.css */
+
 
 .textarea-description {
-    width: 100%; /* Dimensione del campo */
-    /* RIMOZIONE: max-width: 600px; */ /* Rimuovi questa riga per permettere l'espansione */
-    height: auto; /* Altera l'altezza */
-    min-height: 100px; /* Altezza minima */
-    padding: 10px; /* Spazi interni */
-    resize: vertical; /* Permette di ridimensionare solo verticalmente */
-    font-family: "Noto Serif", "Noto Sans", sans-serif; /* Uniforma il font */
+    width: 100%;
+    height: auto;
+    min-height: 100px;
+    padding: 10px;
+    resize: vertical;
+    font-family: "Noto Serif", "Noto Sans", sans-serif;
 }
 
 
 
 .textarea-container {
-    display: block; /* Rimuovi il comportamento di flexbox */
-    background-color: transparent; /* Rimuovi lo sfondo */
-    padding: 0; /* Rimuovi il padding */
-    height: auto; /* Rendi l'altezza dinamica */
+    display: block;
+    background-color: transparent;
+    padding: 0;
+    height: auto;
 }
 
 .textarea-container textarea {
-    width: 100%; /* Larghezza al 100% */
-    /* RIMOZIONE: max-width: 600px; */ /* Rimuovi anche questa riga */
-    min-height: 100px; /* Altezza minima */
-    padding: 10px; /* Spazi interni */
+    width: 100%;
+    min-height: 100px;
+    padding: 10px;
     background-color: #dcdcdc;
-    font-family: "Noto Serif", "Noto Sans", sans-serif; /* Font coerente */
+    font-family: "Noto Serif", "Noto Sans", sans-serif;
     font-size: 1rem;
-    border: none; /* Bordo per distinguere */
-    border-radius: 5px; /* Bordo arrotondato */
+    border: none;
+    border-radius: 5px;
 }
 input[type="file"]{
     display: none;
@@ -41,8 +39,8 @@ input[type="file"]{
     border-radius: 10px;
     width: min-content;
     cursor: pointer;
-    display: flex; /* Usato per disporre gli elementi orizzontalmente */
-    gap: 0.5em; /* Spaziatura tra label e checkmark */
+    display: flex;
+    gap: 0.5em;
     white-space: nowrap;
 }
 
@@ -52,24 +50,23 @@ input[type="file"]{
 }
 
 .attach-image .checkmark {
-    display: none; /* Nascondi il checkmark di default */
+    display: none;
     color: green;
     font-weight: bold;
-    font-size: 1.5em; /* Dimensiona il checkmark */
+    font-size: 1.5em;
     vertical-align: middle;
 }
 
-/* Stile per il selettore del form */
 .form-select {
-    width: min-content; /* Larghezza a disposizione */
-    background-color: transparent; /* Colore di sfondo coerente */
-    padding: 0.7rem 1.5rem; /* Spaziatura interna per il testo */
-    border: 1px solid #dcdcdc; /* Bordo del selettore */
-    border-radius: 10px; /* Bordo arrotondato */
-    font-family: "Noto Serif", "Noto Sans", sans-serif; /* Famiglia font coerente */
-    font-size: 1rem; /* Dimensione del testo */
-    color: #333; /* Colore del testo */
-    cursor: pointer; /* Cambia il cursore in una freccia di selezione */
+    width: min-content;
+    background-color: transparent;
+    padding: 0.7rem 1.5rem;
+    border: 1px solid #dcdcdc;
+    border-radius: 10px;
+    font-family: "Noto Serif", "Noto Sans", sans-serif;
+    font-size: 1rem;
+    color: #333;
+    cursor: pointer;
 }
 
 
@@ -93,14 +90,14 @@ input[type="file"]{
 
 .form-group-row {
     display: flex;
-    gap: 20px; /* Spazio tra gli elementi */
+    gap: 20px;
 }
 
 .form-group-row .form-group {
-    flex: 1; /* Adatta la larghezza dei campi */
+    flex: 1;
 }
 
 .search-bar {
-    width: 100%; /* Campo a tutta larghezza nel contenitore */
+    width: 100%;
 }
 

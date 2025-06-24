@@ -13,7 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import uniroma3.it.siwbooks.service.CredentialsService;
 
 @Controller
 public class AuthenticationController {
@@ -48,10 +47,7 @@ public class AuthenticationController {
 
     @GetMapping("/success")
     public String successRedirect() {
-        // reindirizza in base al ruolo
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        //if (auth.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ADMIN")))
-        //return "redirect:/admin/home";
         return "redirect:/book/all";
     }
 }

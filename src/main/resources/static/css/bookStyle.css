@@ -13,11 +13,11 @@
     max-width: 1600px;
 }
 .flex.book-content{
-    display: flex; /* Mantieni flex sul contenitore */
+    display: flex;
     flex-direction: column;
-    justify-content: center; /* Centra orizzontalmente */
+    justify-content: center;
     align-items: center;
-    margin: 3rem auto 0; /* Aggiungi un margine superiore di 3rem */
+    margin: 3rem auto 0;
 
 }
 .flex.content-2{
@@ -47,29 +47,26 @@
 .title{
     display: flex;
     flex-direction: column;
+    margin-bottom: 2em;
 }
-/* Stili per il contenitore .title e i suoi figli */
-
-/* Spaziatura e stile per il titolo (h1) */
 .title h1 {
-    font-size: 2em;     /* Esempio: rendi il titolo più grande */
+    font-size: 2em;
     margin-bottom: 0px;
 }
 
-/* Spaziatura e stile per l'anno (p) */
 .title p {
     margin-top: 0px;
-    font-size: 0.8em;   /* Esempio: dimensione per l'anno */
-    color: #555555;     /* Esempio: colore più tenue per l'anno */
-    margin-bottom: 0.2em; /* Spazio tra l'anno e l'autore sottostante */
+    font-size: 0.8em;
+    color: #555555;
+    margin-bottom: 0.2em;
 }
 
-/* Spaziatura e stile per l'autore (a) */
+
 .title a {
-    font-size: 0.5em;   /* Esempio: dimensione per l'autore */
+    font-size: 0.5em;
     color: #666;
-    text-decoration: none; /* Rimuove la sottolineatura standard dei link */
-    margin-bottom: 3em;
+    text-decoration: none;
+
 }
 .description{
     margin-bottom: 3em;

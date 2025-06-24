@@ -13,6 +13,7 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private int rating;
+    private String title;
     private String reviewDescription;
 
 
@@ -45,6 +46,10 @@ public class Review {
     public String getReviewDescription() {
         return reviewDescription;
     }
+
+    public String getTitle() {return title;}
+
+    public void setTitle(String title) {this.title = title;}
 
     public void setReviewDescription(String reviewDescription) {
         this.reviewDescription = reviewDescription;

@@ -18,15 +18,16 @@
             <a href="/author/all">Authors</a>
         </div>
         <div class="flex justify-end gap-9">
-            <a class="profile-icon" href="/profile">
+            <a th:if="${isLoggedIn}" class="profile-icon" href="/profile">
                 <i class="fas fa-user-circle"></i>
             </a>
+            <a th:if="${!isLoggedIn}" class="padding" href="/login">Login</a>
         </div>
     </header>
     <div class="flex content">
         <div class="title">
             <h2>Books</h2>
-            <button th:if="${credentials.role == 'ADMIN'}" class="add-content-button" onclick="window.location.href='/book/new'">
+            <button th:if="${role == 'ADMIN'}" class="add-content-button" onclick="window.location.href='/book/new'">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
@@ -45,7 +46,8 @@
                         </div>
                     </div>
                 </a>
-                 <a  class="delete-icon" th:if="${credentials.role == 'ADMIN'}" th:data-id="${book.id}" th:data-title="${book.title}" onclick="return confirmDeleteBook(this.getAttribute('data-id'), this.getAttribute('data-title'))">
+                 <a class="fas fa-pen" th:if="${role == 'ADMIN'}" th:href="@{'/book/edit/' + ${book.id}}"></a>
+                 <a  class="delete-icon" th:if="${role == 'ADMIN'}" th:data-id="${book.id}" th:data-title="${book.title}" onclick="return confirmDeleteBook(this.getAttribute('data-id'), this.getAttribute('data-title'))">
                      <i class="fa-solid fa-trash"></i>
                  </a>
 

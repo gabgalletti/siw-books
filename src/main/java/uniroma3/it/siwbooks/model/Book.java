@@ -19,7 +19,7 @@ public class Book {
     private String imageUrl;
 
 
-    @OneToMany(mappedBy = "book")//, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews = new ArrayList<>();
 
     private double averageRating;
@@ -36,12 +36,12 @@ public class Book {
     @ManyToMany(mappedBy = "favouriteBooks")
     private List<User> users;
 
-    @Column(nullable = false, updatable = false)  // Obbligatorio, mai aggiornabile
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = LocalDateTime.now(); // Imposta l'ora corrente prima del salvataggio
+        this.createdAt = LocalDateTime.now();
     }
 
 
