@@ -25,7 +25,7 @@ public class AuthorController {
     @Autowired private CredentialsService credentialsService;
 
 
-    @GetMapping("/author/{id}")
+    @GetMapping("/author/details/{id}")
     public String author(@PathVariable("id") Long id, Model model){
         Optional<Author> author = authorService.findById(id);
         if(author.isPresent())

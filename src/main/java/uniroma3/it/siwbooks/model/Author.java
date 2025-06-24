@@ -2,6 +2,7 @@ package uniroma3.it.siwbooks.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -10,12 +11,16 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+    private String surname;
+    private int yearOfBirth;
+    private int yearOfDeath;
+    private String nationality;
     @Lob
     private String description;
     private String imageUrl;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Book> books;
+    @ManyToMany(mappedBy = "authors", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<Book> books;
 
     public Long getId() {
         return id;
@@ -33,6 +38,22 @@ public class Author {
         this.name = name;
     }
 
+    public String getSurname(){return this.surname;}
+
+    public void setSurname(String surname){this.surname = surname;}
+
+    public int getYearOfBirth() {return yearOfBirth;}
+
+    public void setYearOfBirth(int yearOfBirth) {this.yearOfBirth = yearOfBirth;}
+
+    public int getYearOfDeath(){return this.yearOfDeath;}
+
+    public void setYearOfDeath(int yearOfDeath){this.yearOfDeath = yearOfDeath;}
+
+    public String getNationality() {return nationality;}
+
+    public void setNationality(String nationality) {this.nationality = nationality;}
+
     public String getDescription() {
         return description;
     }
@@ -49,11 +70,11 @@ public class Author {
         this.imageUrl = imageUrl;
     }
 
-    public Set<Book> getBooks() {
+    public List<Book> getBooks() {
         return books;
     }
 
-    public void setBooks(Set<Book> books) {
+    public void setBooks(List<Book> books) {
         this.books = books;
     }
 

@@ -27,10 +27,10 @@
             <h2>Most Liked Books</h2>
             <div class="book-gallery flex gap-4">
                 <div class="book-item" th:each="book : ${mostLikedBooks}">
-                    <a th:href="@{'/book/' + ${book.id}}">
+                    <a th:href="@{'/book/details/' + ${book.id}}">
                         <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
                     </a>
-                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book/' + ${book.id}}">Titolo</a>
+                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book/details/' + ${book.id}}">Titolo</a>
                     <p th:text="'Favorited by ' + ${book.users.size()} + ' users'">N Like to this Book</p>
                 </div>
             </div>
@@ -39,10 +39,10 @@
             <h2>Top Authors</h2>
             <div class="book-gallery flex gap-4">
                 <div class="author-item" th:each="author: ${topAuthors}">
-                    <a class="circle-container" th:href="@{'/author/' + ${author.id}}">
-                        <img th:src="${author.imageUrl}" th:href="@{'/author/' + ${author.id}}" alt="Author image" class="book-image"/>
+                    <a class="circle-container" th:href="@{'/author/details/' + ${author.id}}">
+                        <img th:src="${author.imageUrl}" th:href="@{'/author/details/' + ${author.id}}" alt="Author image" class="book-image"/>
                     </a>
-                    <span style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${author.name}" th:href="@{'/author/' + ${author.id}}">Titolo</span>
+                    <span style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${author.name + ' ' + author.surname}" th:href="@{'/author/' + ${author.id}}">Titolo</span>
                 </div>
             </div>
         </div>
@@ -50,11 +50,11 @@
             <h2>New Releases</h2>
             <div class="book-gallery flex gap-4">
                 <div class="book-item" th:each="book : ${newBooks}">
-                    <a th:href="@{'/book/' + ${book.id}}">
+                    <a th:href="@{'/book/details/' + ${book.id}}">
                         <img th:src="${book.imageUrl}" alt="Book cover" class="book-image"/>
                     </a>
-                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book/' + ${book.id}}">Titolo</a>
-                    <p th:text="${book.author.name}">Year</p>
+                    <a style="text-decoration: none; font-weight: bold; color:black; font-size: 1.2rem;" th:text="${book.title}" th:href="@{'/book/details/' + ${book.id}}">Titolo</a>
+                    <p th:text="${book.year}">Year</p>
                 </div>
             </div>
         </div>

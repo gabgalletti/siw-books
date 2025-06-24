@@ -25,7 +25,8 @@
     </header>
     <div class="flex book-content justify-start">
         <div class="title" th:if="${author != null}">
-            <h1 th:text="${author.name}">Author Name</h1>
+            <h1 th:text="${author.name + ' ' + author.surname}">Author Name</h1>
+            <p th:text="${author.yearOfBirth + ' - ' + author.yearOfDeath}"></p>
         </div>
         <div class="content-left">
             <img class="author-image justify-start" th:if="${author != null and author.imageUrl != null}" th:src="${author.imageUrl}">
@@ -39,7 +40,7 @@
                         <div class="content-list-item">
                             <img class="content-thumbnail" th:src="${book.imageUrl}">
                             <div class="content-details">
-                                <span class="content-title-text" th:if="${book.id != null}" th:text="${book.title}" th:href="@{/book/{id}(id=${book.id})}">Book Title</span>
+                                <span class="content-title-text" th:if="${book.id != null}" th:text="${book.title}" th:href="@{/book/details/{id}(id=${book.id})}">Book Title</span>
                             </div>
                         </div>
                     </a>

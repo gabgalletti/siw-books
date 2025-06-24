@@ -24,8 +24,14 @@ public class Book {
 
     private double averageRating;
 
-    @ManyToOne
-    private Author author;
+    @ManyToMany
+    @JoinTable(
+            name = "book_author",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+
+    private List<Author> authors = new ArrayList<>();
 
     @ManyToMany(mappedBy = "favouriteBooks")
     private List<User> users;
@@ -55,12 +61,12 @@ public class Book {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return this.author;
+    public List<Author> getAuthors() {
+        return this.authors;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
     public int getYear() {

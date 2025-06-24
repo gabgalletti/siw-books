@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import uniroma3.it.siwbooks.model.Author;
 import uniroma3.it.siwbooks.model.Book;
 import uniroma3.it.siwbooks.model.Review;
 import uniroma3.it.siwbooks.model.User;
@@ -27,7 +28,7 @@ public class BookController {
     @Autowired private CredentialsService credentialsService;
     @Autowired private UserService userService;
 
-    @GetMapping("/book/{id}")
+    @GetMapping("/book/details/{id}")
     public String book(@PathVariable("id") Long id,Model model){
         Optional<Book> bookOptional = bookService.findById(id);
         if (bookOptional.isEmpty()) {
@@ -72,7 +73,7 @@ public class BookController {
 
         return "book";
     }
-    @PostMapping("/book/{id}")
+    @PostMapping("/book/details/{id}")
     public String addToFavourites(@PathVariable("id") Long id,
                                   @ModelAttribute("favourited") boolean favourited,
                                   Model model) {
@@ -90,11 +91,11 @@ public class BookController {
         // Aggiorna il modello con il nuovo stato
         model.addAttribute("book", book);
         model.addAttribute("favourited", userService.getLoggedUser().getFavouriteBooks().contains(book)); // Inverti lo stato
-        return "redirect:/book/" + id; // Torna alla stessa pagina"; // Torna alla stessa pagina
+        return "redirect:/book/details/" + id; // Torna alla stessa pagina"; // Torna alla stessa pagina
 
     }
 
-    @PostMapping("/book/{id}/saveReview")
+    @PostMapping("/book/saveReview/{id}")
     public String saveReview(@PathVariable("id") Long id,
                             @RequestParam("rating") int rating,
                             @RequestParam("reviewDescription") String reviewDescription, Model model) {      //problema con id di dummyReview: viene passato un id = 1
@@ -116,7 +117,7 @@ public class BookController {
         // Qui il controllo che hai già:
         if (reviewService.existsByUserAndBook(loggedUser, book)) {
             model.addAttribute("error", "You have already reviewed this book");
-            return "redirect:/book/" + id + "?error=alreadyReviewed"; // O la gestione errori che preferisci
+            return "redirect:/book/details/" + id + "?error=alreadyReviewed"; // O la gestione errori che preferisci
         }
 
         // Ora crei esplicitamente una NUOVA istanza di Review
@@ -140,7 +141,7 @@ public class BookController {
         }
         book.setAverageRating(averageRating);
         bookService.save(book);
-        return "redirect:/book/" + id;
+        return "redirect:/book/details/" + id;
 
     }
 
@@ -161,10 +162,12 @@ public class BookController {
 
     @PostMapping("/book/new")
     public String bookNew(Book book,
+                          @RequestParam("authors") List<Long> authorsIds,
                           @ModelAttribute("image")MultipartFile image,
                           Model model) {
-
-        String fileName = book.getTitle() + book.getAuthor().getName() + '.' + image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf('.') + 1);
+        List<Author> authors = authorService.findByIds(authorsIds);
+        book.setAuthors(authors);
+        String fileName = book.getTitle() + book.getAuthors().get(0).getName() + '.' + image.getOriginalFilename().substring(image.getOriginalFilename().lastIndexOf('.') + 1);
         try{
             Path uploadPath = Paths.get("C:/Users/Gabriele/Desktop/uploads-siw-books/books-cover/");
             if (!Files.exists(uploadPath)) {
@@ -173,7 +176,8 @@ public class BookController {
             Path filePath = uploadPath.resolve(fileName);
             image.transferTo(filePath.toFile());
             book.setImageUrl(String.format("/books-cover/%s", fileName));
-            book.getAuthor().getBooks().add(book);
+            for(Author a: book.getAuthors())
+                a.getBooks().add(book);
             bookService.save(book);
         } catch (IOException e) {
             e.printStackTrace();

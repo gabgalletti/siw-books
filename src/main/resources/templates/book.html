@@ -28,7 +28,7 @@
     <div class="title" th:if="${book != null}">
         <h1 th:text="${book.title}">Book Name</h1>
         <p th:text="${'Released in ' + book.year}"> (Year)</p>
-        <a th:if="${book.author != null}" th:text="${'By ' + book.author.name}" th:href="@{'/author/' + ${book.author.id}}">Artist</a>
+        <a th:each="author : ${book.authors}" th:href="@{'/author/details/' + ${author.id}}" th:text="${author.name + ' ' + author.surname + '  '}">Artist</a>
     </div>
     <div class="flex content-2">
         <div class="content-left">
@@ -39,7 +39,7 @@
             </div>
             <div class="separator"></div>
 
-            <form th:if="${!hasReviewed}" th:action="@{'/book/' + ${book.id} + '/saveReview'}" method="post">
+            <form th:if="${!hasReviewed}" th:action="@{'/book/saveReview/' + ${book.id}}" method="post">
                 <h3>Add your review</h3>
 
                 <label>Rating:</label><br>
@@ -87,7 +87,7 @@
                 </div>
             </div>
             <div class="add-to-favourites-section">
-                <form th:action="@{'/book/' + ${book.id}}" method="post">
+                <form th:action="@{'/book/details/' + ${book.id}}" method="post">
                     <input type="hidden" id="favourited" name="favourited" th:value="${favourited}"> <!-- Campo hidden -->
                     <button type="submit" id="addToFavourites">
                         <span style='font-family: "Noto Serif", "Noto Sans", sans-serif;' th:text="${favourited} ? 'Added to favourite' : 'Add to Favourites'"></span>

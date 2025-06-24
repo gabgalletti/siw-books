@@ -8,6 +8,7 @@
     <link rel="stylesheet" th:href="@{/css/formStyle.css}">
     <link rel="stylesheet" th:href="@{/css/bookStyle.css}">
     <script rel="script" th:src="@{/js/formScript.js}" defer></script>
+    <script rel="script" th:src="@{'/js/AddAuthors.js'}" defer></script>
     <title>Add new Author</title>
 </head>
 <body style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
@@ -29,10 +30,33 @@
             <h1>Add new Author</h1>
         </div>
     <form th:action="@{/author/new}" th:method="post" th:object="${author}" enctype="multipart/form-data" style="width: 100%">
-        <div class="form-group margin-bottom">
-            <label for="name">Name:</label>
-            <div class="search-container">
-                <input type="text" id="name" name="name" class="search-bar" th:value="${author.name}" required placeholder="Insert author name">
+        <div class="form-group-row margin-bottom">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <div class="search-container">
+                    <input type="text" id="name" name="name" class="search-bar" th:value="${author.name}" required placeholder="Insert author name">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="surname">Surname:</label>
+                <div class="search-container">
+                    <input type="text" id="surname" name="surname" class="search-bar" th:value="${author.surname}" required placeholder="Insert author surname">
+
+                </div>
+            </div>
+        </div>
+        <div class="form-group-row margin-bottom">
+            <div class="form-group">
+                <label for="yearOfBirth">Birth Date:</label>
+                <div class="search-container">
+                    <input type="number" id="yearOfBirth" name="yearOfBirth" class="search-bar" th:value="${author.yearOfBirth}" required placeholder="Insert author birth date">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="yearOfDeath">Death Date:</label>
+                <div class="search-container">
+                    <input type="number" id="yearOfDeath" name="yearOfDeath" class="search-bar" th:value="${author.yearOfDeath}" placeholder="Insert author death date">
+                </div>
             </div>
         </div>
         <div class="form-group margin-bottom">

@@ -80,4 +80,5 @@ public class AuthorService {
         this.authorRepository.delete(author);
     }
 
+    public List<Author> findByIds(List<Long> authorsIds) {return this.authorRepository.findAllById(authorsIds);}
 }
