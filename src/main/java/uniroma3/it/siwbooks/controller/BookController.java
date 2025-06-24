@@ -57,6 +57,7 @@ public class BookController {
             model.addAttribute("userReview", null);
             model.addAttribute("reviews", book.getReviews());
             model.addAttribute("role", "NOROLE");
+            model.addAttribute("averageRating", book.getAverageRating());
             return "book";
         }
 

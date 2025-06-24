@@ -38,7 +38,7 @@ public class BookService{
 
         booksList.sort(Comparator
                 .comparing((Book book) -> book.getUsers() != null ? book.getUsers().size() : 0).reversed()
-                .thenComparingDouble(Book::getAverageRating).reversed()
+                .thenComparingDouble(Book::getAverageRating)
         );
 
 

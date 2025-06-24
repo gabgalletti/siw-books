@@ -44,9 +44,9 @@
                 <div class="review" th:if="${hasReviewed && isLoggedIn && userReview != null}">
                     <h3>Your review</h3>
                     <div class="content-list-item-wrapper">
-                    <div class="review margin-bottom content-list-item-link" style="border-bottom: 1px solid #ccc; padding: 1em; width: 20%">
-                        <div class="review-user" th:text="${userReview.user.name} + ' ' + ${userReview.user.surname}">User</div>
-                        <div class="review-user" style="white-space: nowrap;" th:text="${userReview.title}">Title</div>
+                    <div class="review margin-bottom content-list-item-link" style="border-bottom: 1px solid #ccc; padding: 1em; width: 100%">
+                        <div class="review-user" style="color: #666" th:text="${userReview.user.name} + ' ' + ${userReview.user.surname}">User</div>
+                        <div class="review-user" style="white-space: nowrap; font-size: 24px; font-weight: bold;" th:text="${userReview.title}">Title</div>
                         <div class="rating margin-bottom">
                             <span th:each="i: ${#numbers.sequence(1, 5)}">
                                 <i class="fa star" th:classappend="${i <= userReview.rating} ? 'fa fa-star' : 'far fa-star'"></i>
@@ -60,7 +60,7 @@
                         </a>
                     </div>
                 </div>
-            <form th:if="${!hasReviewed && isLoggedIn}" th:action="@{'/book/saveReview/' + ${book.id}}" method="post">
+            <form th:if="${!hasReviewed && isLoggedIn}" th:action="@{'/book/saveReview/' + ${book.id}}" method="post" style="width: 100%; max-width: 800px; margin-bottom: 20px;">
                 <h3>Add your review</h3>
                 <label>Title:</label>
                 <div class="search-container">
@@ -89,8 +89,8 @@
             <div class="review">
                 <div class="content-list-item-wrapper" th:each="review : ${reviews}">
                 <div class="review margin-bottom content-list-item-link" style="border-bottom: 1px solid #ccc; padding: 1em; width: 100%">
-                    <div class="review-user" th:text="${review.user.name} + ' ' + ${review.user.surname}">User</div>
-                    <div class="review-user" style="white-space: nowrap" th:text="${review.title}">Title</div>
+                    <div class="review-user" style="color: #666" th:text="${review.user.name} + ' ' + ${review.user.surname}">User</div>
+                    <div class="review-user" style="white-space: nowrap; font-size: 24px; font-weight: bold;" th:text="${review.title}">Title</div>
                     <div class="rating margin-bottom">
                         <span th:each="i : ${#numbers.sequence(1, 5)}">
                             <i class="fa star" th:classappend="${i <= review.rating} ? 'fa fa-star' : 'far fa-star'"></i>
